@@ -1,0 +1,13 @@
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\src\test\scala\vga\vga_tb.scala:52:20: value Hdebug is not a member of vga.VGAIO[0m
+[0m[[0m[31merror[0m] [0m[0m        if (dut.io.Hdebug.peekInt() > 655 && dut.io.Hdebug.peekInt() < 752) {[0m
+[0m[[0m[31merror[0m] [0m[0m                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\src\test\scala\vga\vga_tb.scala:52:53: value Hdebug is not a member of vga.VGAIO[0m
+[0m[[0m[31merror[0m] [0m[0m        if (dut.io.Hdebug.peekInt() > 655 && dut.io.Hdebug.peekInt() < 752) {[0m
+[0m[[0m[31merror[0m] [0m[0m                                                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\src\test\scala\vga\vga_tb.scala:69:20: value Vdebug is not a member of vga.VGAIO[0m
+[0m[[0m[31merror[0m] [0m[0m        if (dut.io.Vdebug.peekInt() > 489 && dut.io.Vdebug.peekInt() < 492) {[0m
+[0m[[0m[31merror[0m] [0m[0m                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\src\test\scala\vga\vga_tb.scala:69:53: value Vdebug is not a member of vga.VGAIO[0m
+[0m[[0m[31merror[0m] [0m[0m        if (dut.io.Vdebug.peekInt() > 489 && dut.io.Vdebug.peekInt() < 492) {[0m
+[0m[[0m[31merror[0m] [0m[0m                                                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mfour errors found[0m

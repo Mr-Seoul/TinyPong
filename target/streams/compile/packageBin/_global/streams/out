@@ -1,0 +1,25 @@
+[0m[[0m[0mdebug[0m] [0m[0mPackaging C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\-name-_2.13-0.1.0.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\classes\vga[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\Buffer.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\classes\vga\Buffer.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\BufferIO.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\classes\vga\BufferIO.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\ClockIO.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\classes\vga\ClockIO.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\ClockModule.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\classes\vga\ClockModule.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\Col.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\classes\vga\Col.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\Main$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\classes\vga\Main$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\Main$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\classes\vga\Main$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\Main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\classes\vga\Main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\VGAIO.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\classes\vga\VGAIO.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\VGAModule.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGAProject\chisel-template\target\scala-2.13\classes\vga\VGAModule.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
