@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <option name="separateProdTestSources" value="true" />
+    <profile name="sbt 1" modules="%NAME%,vga-pong_9681,vga-pong_9681.main,vga-pong_9681.test" />
+    <profile name="sbt 2" modules="%NAME%.main,%NAME%.test">
+      <option name="reflectiveCalls" value="true" />
+      <option name="deprecationWarnings" value="true" />
+      <option name="featureWarnings" value="true" />
+      <parameters>
+        <parameter value="-Xcheckinit" />
+        <parameter value="-Ymacro-annotations" />
+      </parameters>
+      <plugins>
+        <plugin path="C:\Users\Markv\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\edu\berkeley\cs\chisel3-plugin_2.13.14\3.6.1\chisel3-plugin_2.13.14-3.6.1.jar" />
+      </plugins>
+    </profile>
+  </component>
+</project>

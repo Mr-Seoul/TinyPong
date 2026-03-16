@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/VGA Pong/%NAME%.iml" filepath="$PROJECT_DIR$/.idea/modules/VGA Pong/%NAME%.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/VGA Pong/%NAME%.%NAME%-build.iml" filepath="$PROJECT_DIR$/.idea/modules/VGA Pong/%NAME%.%NAME%-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/VGA Pong/%NAME%.main.iml" filepath="$PROJECT_DIR$/.idea/modules/VGA Pong/%NAME%.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/VGA Pong/%NAME%.test.iml" filepath="$PROJECT_DIR$/.idea/modules/VGA Pong/%NAME%.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/VGA Pong.iml" filepath="$PROJECT_DIR$/VGA Pong.iml" />
     </modules>
   </component>
