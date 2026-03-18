@@ -7,17 +7,21 @@ object PongSettings {
   val paddleWidth = 10
   val ballRadius  = 10
   val paddleWallDist = 80
-  val paddleJumpSpeed = 20
+  val paddleJumpSpeed = 10
   val paddleGravity = 1
   val ballSpeed = 2
   val ballRounding = 2*ballRadius - 5 //5 pixels of rounding
-  val paddleRounding = paddleHeight + paddleWidth - 3
+  val paddleRounding = paddleHeight + paddleWidth - 5
+}
+
+object DataSettings {
+  val width = 11
 }
 
 class GraphicsProcessorIO extends Bundle {
   val col = new Col
-  val indexX = Input(UInt(12.W))
-  val indexY = Input(UInt(12.W))
+  val indexX = Input(UInt(DataSettings.width.W))
+  val indexY = Input(UInt(DataSettings.width.W))
   val input1 = Input(Bool())
   val input2 = Input(Bool())
   val screenDone = Input(Bool())
@@ -45,15 +49,10 @@ class GraphicsProcessor extends Module {
   Ball.io.updateLogic := io.screenDone
 
   //if out of bounds, reset everything to initial position
-  when (Ball.io.outLeftBound || Ball.io.outRightBound) {
-    P1.reset := 1.B
-    P2.reset := 1.B
-    Ball.reset := 1.B
-  } .otherwise {
-    P1.reset := 0.B
-    P2.reset := 0.B
-    Ball.reset := 0.B
-  }
+  val resetEverything = Ball.io.outLeftBound || Ball.io.outRightBound
+  P1.reset := resetEverything
+  P2.reset := resetEverything
+  Ball.reset := resetEverything
 
   //Output current colour depending on object position
   when (P1.io.inbound) {
@@ -69,8 +68,9 @@ class GraphicsProcessor extends Module {
     io.col.G := 0.U
     io.col.B := 3.U
   } .otherwise {
-    io.col.R := 0.U
-    io.col.G := 0.U
-    io.col.B := 0.U
+    //More interesting Background
+    io.col.R := (io.indexX(5) ^ io.indexY(5)) ^ (io.indexX(2) ^ io.indexY(2))
+    io.col.G := (io.indexX(4) ^ io.indexY(4)) ^ (io.indexX(1) ^ io.indexY(1))
+    io.col.B := (io.indexX(3) ^ io.indexY(3)) ^ (io.indexX(0) ^ io.indexY(0))
   }
 }

@@ -7,8 +7,8 @@ class VGAIO extends Bundle {
   val col = Output(new Col)
   val hsync = Output(Bool())
   val vsync = Output(Bool())
-  val Hdebug = Output(UInt(10.W))
-  val Vdebug = Output(UInt(10.W))
+  //val Hdebug = Output(UInt(10.W))
+  //val Vdebug = Output(UInt(10.W))
   val input1 = Input(Bool())
   val input2 = Input(Bool())
 }
@@ -21,8 +21,8 @@ class VGAModule extends Module {
   val (hCounter,hWrap) = Counter(slowClock.io.clk,800)
   val (vCounter,vWrap) = Counter(hWrap && slowClock.io.clk, 525)
 
-  io.Hdebug := hCounter
-  io.Vdebug := vCounter
+  //io.Hdebug := hCounter
+  //io.Vdebug := vCounter
   val graphics = Module(new GraphicsManager())
 
   //Default IO
