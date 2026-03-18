@@ -14,32 +14,33 @@ class PaddleObjIO() extends Bundle {
 class PaddleObj(startX: Int,startY: Int) extends Module {
   val io = IO(new PaddleObjIO())
 
-  val curPos = RegInit(VecInit(startX.S(DataSettings.width.W), startY.S(DataSettings.width.W)))
+  val curPosX = startX.S(DataSettings.width.W)
+  val curPosY = RegInit(startY.S(DataSettings.width.W))
   val velocity = RegInit(0.S(DataSettings.width.W))
 
   val bottomWall = (480.S - PongSettings.paddleHeight.S)
   val topWall = PongSettings.paddleHeight.S
 
   when (io.updateLogic) {
-    //Make logic better here, it's fragmented rn which makes it unpredictable
+    //Gravity logic
     when (io.input) {
       velocity := -PongSettings.paddleJumpSpeed.S
-    } .elsewhen (curPos(1) === bottomWall) {
+    } .elsewhen (curPosY === bottomWall) {
       velocity := PongSettings.paddleGravity.S
-    } .elsewhen (curPos(1) === topWall) {
+    } .elsewhen (curPosY === topWall) {
       velocity := 0.S
     } .otherwise {
       velocity := velocity + PongSettings.paddleGravity.S
     }
 
     //Clamp position inbetween two top walls
-    val newPos = curPos(1) + velocity
-    curPos(1) := Mux(newPos > bottomWall, bottomWall,Mux(newPos < topWall, topWall, newPos))
+    val newPos = curPosY + velocity
+    curPosY := Mux(newPos > bottomWall, bottomWall,Mux(newPos < topWall, topWall, newPos))
   }
 
-  val diffX = io.pos(0) - curPos(0)
+  val diffX = io.pos(0) - curPosX
   val absX = diffX.abs
-  val absY = (io.pos(1) - curPos(1)).abs
+  val absY = (io.pos(1) - curPosY).abs
 
   val inSquare = (absX < PongSettings.paddleWidth.S) && (absY < PongSettings.paddleHeight.S)
   //val inDiamond = absX + absY < PongSettings.paddleRounding.S
@@ -47,5 +48,5 @@ class PaddleObj(startX: Int,startY: Int) extends Module {
   io.inbound := inSquare
   io.sideX := diffX.head(1).asBool
 
-  io.paddlePos := curPos
+  io.paddlePos := VecInit(curPosX,curPosY)
 }
