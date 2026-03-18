@@ -8,6 +8,7 @@ class PaddleObjIO() extends Bundle {
   val inbound = Output(Bool())
   val paddlePos = Output(Vec(2,SInt(DataSettings.width.W)))
   val updateLogic = Input(Bool())
+  val sideX = Output(Bool())
 }
 
 class PaddleObj(startX: Int,startY: Int) extends Module {
@@ -36,13 +37,15 @@ class PaddleObj(startX: Int,startY: Int) extends Module {
     curPos(1) := Mux(newPos > bottomWall, bottomWall,Mux(newPos < topWall, topWall, newPos))
   }
 
-  val absX = (io.pos(0) - curPos(0)).abs
+  val diffX = io.pos(0) - curPos(0)
+  val absX = diffX.abs
   val absY = (io.pos(1) - curPos(1)).abs
 
   val inSquare = (absX < PongSettings.paddleWidth.S) && (absY < PongSettings.paddleHeight.S)
-  val inDiamond = absX + absY < PongSettings.paddleRounding.S
+  //val inDiamond = absX + absY < PongSettings.paddleRounding.S
 
-  io.inbound := inSquare && inDiamond
+  io.inbound := inSquare
+  io.sideX := diffX.head(1).asBool
 
   io.paddlePos := curPos
 }

@@ -1,6 +1,7 @@
 package vga
 
 import chisel3._
+import chisel3.util.Fill
 
 object PongSettings {
   val paddleHeight  = 40 //Note that due to how absolutes work, this is half the size (think of it as a radius)
@@ -54,19 +55,22 @@ class GraphicsProcessor extends Module {
   P2.reset := resetEverything
   Ball.reset := resetEverything
 
-  //Output current colour depending on object position
+  //Output current colour depending on object position, and dithering if applicable
+  val dithered = io.indexX(2) ^ io.indexY(2)
+  val circleShadow = Ball.io.sideX | !Ball.io.sideY
+
   when (P1.io.inbound) {
-    io.col.R := 3.U
+    io.col.R := dithered | Fill(2,P1.io.sideX)
     io.col.G := 0.U
     io.col.B := 0.U
   } .elsewhen(P2.io.inbound) {
     io.col.R := 0.U
-    io.col.G := 3.U
+    io.col.G := dithered | Fill(2,!P2.io.sideX)
     io.col.B := 0.U
   } .elsewhen(Ball.io.inbound) {
     io.col.R := 0.U
     io.col.G := 0.U
-    io.col.B := 3.U
+    io.col.B := dithered | Fill(2,circleShadow)
   } .otherwise {
     //More interesting Background
     io.col.R := (io.indexX(5) ^ io.indexY(5)) ^ (io.indexX(2) ^ io.indexY(2))

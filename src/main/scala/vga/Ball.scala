@@ -10,6 +10,8 @@ class BallObjIO() extends Bundle {
   val updateLogic = Input(Bool())
   val outLeftBound = Output(Bool())
   val outRightBound = Output(Bool())
+  val sideX = Output(Bool())
+  val sideY = Output(Bool())
 }
 
 class BallObj(startX: Int,startY: Int) extends Module {
@@ -49,12 +51,16 @@ class BallObj(startX: Int,startY: Int) extends Module {
   }
 
   //Update inbound
-  val absX = (io.pos(0) - curPos(0)).abs
-  val absY = (io.pos(1) - curPos(1)).abs
+  val diffX = io.pos(0) - curPos(0)
+  val diffY = io.pos(1) - curPos(1)
+  val absX = diffX.abs
+  val absY = diffY.abs
   val inSquare = (absX < PongSettings.ballRadius.S) && (absY < PongSettings.ballRadius.S)
-  val inDiamond = absX + absY < PongSettings.ballRounding.S
+  //val inDiamond = absX + absY < PongSettings.ballRounding.S
 
-  io.inbound := inSquare && inDiamond
+  io.inbound := inSquare
+  io.sideX := diffX.head(1).asBool
+  io.sideY := diffY.head(1).asBool
 
   io.outRightBound := outRightBound
   io.outLeftBound := outLeftBound

@@ -11,7 +11,7 @@ class ClockIO extends Bundle {
 class ClockModule extends Module {
   val io = IO(new ClockIO)
 
-  val clockCount = RegInit(0.U(2.W))
-  clockCount := clockCount + 1.U
-  io.clk := (clockCount === 3.U)
+  //val clockCount = RegInit(0.U(2.W))
+  //clockCount := clockCount + 1.U
+  io.clk := clock.asBool
 }
