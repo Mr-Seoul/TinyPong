@@ -1,10 +1,7 @@
-[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGA Pong\src\main\scala\vga\GraphicsProcessor.scala:60:17: value Fill in package Chisel is deprecated (since Chisel 3.6): Chisel compatibility mode is deprecated. Use the chisel3 package instead.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    io.col.R := Fill(2, P1.io.inbound)[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGA Pong\src\main\scala\vga\GraphicsProcessor.scala:73:17: value Cat in package Chisel is deprecated (since Chisel 3.6): Chisel compatibility mode is deprecated. Use the chisel3 package instead.[0m
+[0m[[0m[33mwarn[0m] [0m[0m    io.col.R := Cat(dithered,dithered) | Fill(2,!P1.io.sideX)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGA Pong\src\main\scala\vga\GraphicsProcessor.scala:61:17: value Fill in package Chisel is deprecated (since Chisel 3.6): Chisel compatibility mode is deprecated. Use the chisel3 package instead.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    io.col.G := Fill(2, P2.io.inbound)[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGA Pong\src\main\scala\vga\GraphicsProcessor.scala:79:17: value Cat in package Chisel is deprecated (since Chisel 3.6): Chisel compatibility mode is deprecated. Use the chisel3 package instead.[0m
+[0m[[0m[33mwarn[0m] [0m[0m    io.col.G := Cat(dithered,dithered) | Fill(2,P2.io.sideX)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGA Pong\src\main\scala\vga\GraphicsProcessor.scala:62:17: value Fill in package Chisel is deprecated (since Chisel 3.6): Chisel compatibility mode is deprecated. Use the chisel3 package instead.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    io.col.B := Fill(2, Ball.io.inbound)[0m
-[0m[[0m[33mwarn[0m] [0m[0m                ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mthree warnings found[0m
+[0m[[0m[33mwarn[0m] [0m[0mtwo warnings found[0m

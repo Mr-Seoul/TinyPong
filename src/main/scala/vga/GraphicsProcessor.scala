@@ -1,18 +1,18 @@
 package vga
 
+import Chisel.Cat
 import chisel3._
 import chisel3.util.Fill
 
 object PongSettings {
-  val paddleHeight  = 40 //Note that due to how absolutes work, this is half the size (think of it as a radius)
-  val paddleWidth = 10
+  val paddleHeight  = 50 //Note that due to how absolutes work, this is half the size (think of it as a radius)
+  val paddleWidth = 12
   val ballRadius  = 10
   val paddleWallDist = 80
   val paddleJumpSpeed = 10
   val paddleGravity = 1
   val ballSpeed = 2
   val ballRounding = 2*ballRadius - 5 //5 pixels of rounding
-  val paddleRounding = paddleHeight + paddleWidth - 5
 }
 
 object DataSettings {
@@ -55,26 +55,39 @@ class GraphicsProcessor extends Module {
   P2.reset := resetEverything
   Ball.reset := resetEverything
 
+  val XOR0 = io.indexX(0) ^ io.indexY(0)
+  val XOR1 = io.indexX(1) ^ io.indexY(1)
+  val XOR2 = io.indexX(2) ^ io.indexY(2)
+  val XOR3 = io.indexX(3) ^ io.indexY(3)
+  val XOR4 = io.indexX(4) ^ io.indexY(4)
+  val XOR5 = io.indexX(5) ^ io.indexY(5)
+
   //Output current colour depending on object position, and dithering if applicable
-  val dithered = io.indexX(2) ^ io.indexY(2)
-  val circleShadow = Ball.io.sideX | !Ball.io.sideY
+  val BaysianDither = VecInit(XOR0,io.indexY(1),XOR1,io.indexY(0)).asUInt
+  //val BaysianDither = VecInit(io.indexY(0),XOR0).asUInt
+  val inputAbsX = Wire(UInt(DataSettings.width.W))
+  val dithered = inputAbsX <= BaysianDither
 
   when (P1.io.inbound) {
-    io.col.R := dithered | Fill(2,P1.io.sideX)
+    inputAbsX := P1.io.absX
+    io.col.R := Cat(dithered,dithered) | Fill(2,!P1.io.sideX)
     io.col.G := 0.U
     io.col.B := 0.U
   } .elsewhen(P2.io.inbound) {
+    inputAbsX := P2.io.absX
     io.col.R := 0.U
-    io.col.G := dithered | Fill(2,!P2.io.sideX)
+    io.col.G := Cat(dithered,dithered) | Fill(2,P2.io.sideX)
     io.col.B := 0.U
   } .elsewhen(Ball.io.inbound) {
+    inputAbsX := 0.U
     io.col.R := 0.U
-    io.col.G := 0.U
-    io.col.B := dithered | Fill(2,circleShadow)
+    io.col.G := 3.U
+    io.col.B := 3.U
   } .otherwise {
+    inputAbsX := 0.U
     //More interesting Background
-    io.col.R := (io.indexX(5) ^ io.indexY(5)) ^ (io.indexX(2) ^ io.indexY(2))
-    io.col.G := (io.indexX(4) ^ io.indexY(4)) ^ (io.indexX(1) ^ io.indexY(1))
-    io.col.B := (io.indexX(3) ^ io.indexY(3)) ^ (io.indexX(0) ^ io.indexY(0))
+    io.col.R := (XOR5) ^ (XOR2)
+    io.col.G := (XOR4) ^ (XOR1)
+    io.col.B := (XOR3) ^ (XOR0)
   }
 }

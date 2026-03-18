@@ -18,6 +18,9 @@ class VGAModule extends Module {
 
   //Clock module and counters
   //val slowClock = Module(new ClockModule)
+  //val (hCounter,hWrap) = Counter(slowClock.io.clk,800)
+  //val (vCounter,vWrap) = Counter(hWrap && slowClock.io.clk, 525)
+
   val (hCounter,hWrap) = Counter(1.B,800)
   val (vCounter,vWrap) = Counter(hWrap, 525)
 

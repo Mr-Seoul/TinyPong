@@ -9,6 +9,7 @@ class PaddleObjIO() extends Bundle {
   val paddlePos = Output(Vec(2,SInt(DataSettings.width.W)))
   val updateLogic = Input(Bool())
   val sideX = Output(Bool())
+  val absX = Output(UInt(DataSettings.width.W))
 }
 
 class PaddleObj(startX: Int,startY: Int) extends Module {
@@ -25,9 +26,9 @@ class PaddleObj(startX: Int,startY: Int) extends Module {
     //Gravity logic
     when (io.input) {
       velocity := -PongSettings.paddleJumpSpeed.S
-    } .elsewhen (curPosY === bottomWall) {
-      velocity := PongSettings.paddleGravity.S
     } .elsewhen (curPosY === topWall) {
+      velocity := PongSettings.paddleGravity.S
+    } .elsewhen (curPosY === bottomWall) {
       velocity := 0.S
     } .otherwise {
       velocity := velocity + PongSettings.paddleGravity.S
@@ -39,10 +40,11 @@ class PaddleObj(startX: Int,startY: Int) extends Module {
   }
 
   val diffX = io.pos(0) - curPosX
-  val absX = diffX.abs
-  val absY = (io.pos(1) - curPosY).abs
+  val absX = diffX.abs.asUInt
+  io.absX := absX
+  val absY = (io.pos(1) - curPosY).abs.asUInt
 
-  val inSquare = (absX < PongSettings.paddleWidth.S) && (absY < PongSettings.paddleHeight.S)
+  val inSquare = (absX < PongSettings.paddleWidth.U) && (absY < PongSettings.paddleHeight.U)
   //val inDiamond = absX + absY < PongSettings.paddleRounding.S
 
   io.inbound := inSquare

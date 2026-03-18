@@ -10,57 +10,53 @@ class BallObjIO() extends Bundle {
   val updateLogic = Input(Bool())
   val outLeftBound = Output(Bool())
   val outRightBound = Output(Bool())
-  val sideX = Output(Bool())
-  val sideY = Output(Bool())
 }
 
 class BallObj(startX: Int,startY: Int) extends Module {
   val io = IO(new BallObjIO())
 
-  val ballSpeed = RegInit(PongSettings.ballSpeed.S(DataSettings.width.W))
+  val ballSpeed = RegInit(PongSettings.ballSpeed.S(6.W))
 
   val curPos = RegInit(VecInit(startX.S(DataSettings.width.W), startY.S(DataSettings.width.W)))
-  val velocity = RegInit(VecInit(1.S(DataSettings.width.W), 1.S(DataSettings.width.W)))
+  val goingRight = RegInit(1.B)
+  val goingDown = RegInit(1.B)
 
   //Game Logic
   when(io.updateLogic) {
     //Bouncing off top and bottom wall
-    velocity(1) := Mux(curPos(1) < PongSettings.ballRadius.S, ballSpeed, Mux(curPos(1) > (480.S - PongSettings.ballRadius.S), -ballSpeed, velocity(1)))
-    curPos(0) := curPos(0) + velocity(0)
-    curPos(1) := curPos(1) + velocity(1)
-
-    val newYSpeed = Mux((velocity(1)(0)^velocity(0)(1)).asBool, ballSpeed,-ballSpeed)
+    goingDown := Mux(curPos(1) < PongSettings.ballRadius.S, 1.B, Mux(curPos(1) > (480.S - PongSettings.ballRadius.S), 0.B, goingDown))
+    curPos(0) := Mux(goingRight, curPos(0) + ballSpeed, curPos(0) - ballSpeed)
+    curPos(1) := Mux(goingDown, curPos(1) + ballSpeed, curPos(1) - ballSpeed)
 
     //Bouncing off paddles
-    val goingLeft = velocity(0) < 0.S
-    val rightPaddledist = (640.S - (PongSettings.paddleWallDist.S + 2.S*PongSettings.paddleWidth.S + PongSettings.ballRadius.S)) - curPos(0)
-    val leftPaddledist = curPos(0) - (PongSettings.paddleWallDist.S + 2.S*PongSettings.paddleWidth.S + PongSettings.ballRadius.S)
-    when(goingLeft && (leftPaddledist > (2*PongSettings.paddleWidth + 2*PongSettings.ballRadius).S) && (leftPaddledist < 0.S) && ((io.P1Pos(1) - curPos(1)).abs < PongSettings.paddleHeight.S)) {
-      velocity(0) := ballSpeed
-      velocity(1) := newYSpeed
-      curPos(0) := PongSettings.paddleWallDist.S + PongSettings.paddleWidth.S + PongSettings.ballRadius.S
-    }.elsewhen(!goingLeft && (rightPaddledist > (2*PongSettings.paddleWidth + 2*PongSettings.ballRadius).S) && (rightPaddledist < 0.S) && ((io.P2Pos(1) - curPos(1)).abs < PongSettings.paddleHeight.S)) {
-      velocity(0) := -ballSpeed
-      velocity(1) := newYSpeed
+    val topBoundary = PongSettings.paddleHeight.S + PongSettings.ballRadius.S
+
+    val P1Left = (PongSettings.paddleWallDist - PongSettings.paddleWidth - PongSettings.ballRadius).S
+    val P1Right = (PongSettings.paddleWallDist + PongSettings.paddleWidth + PongSettings.ballRadius).S
+
+    val P2Left = (640-(PongSettings.paddleWallDist + PongSettings.paddleWidth + PongSettings.ballRadius)).S
+    val P2Right = (640 - (PongSettings.paddleWallDist - PongSettings.paddleWidth - PongSettings.ballRadius)).S
+
+
+    when(!goingRight && (curPos(0) < (P1Right)) && (curPos(0) > P1Left) && ((io.P1Pos(1) - curPos(1)).abs < topBoundary)) {
+      goingRight := 1.B
+      goingDown := ballSpeed(1)^ballSpeed(0)^goingDown^goingRight.asBool
+    }.elsewhen(goingRight && (curPos(0) < (P2Right)) && (curPos(0) > P2Left) && ((io.P2Pos(1) - curPos(1)).abs < topBoundary)) {
+      goingRight := 0.B
+      goingDown := ballSpeed(1)^ballSpeed(0)^goingDown^goingRight.asBool
       ballSpeed := ballSpeed + 1.S //Speed up ball
-      curPos(0) := 640.S - (PongSettings.paddleWallDist.S + PongSettings.paddleWidth.S + PongSettings.ballRadius.S)
-    }
-
-
-
+      }
   }
 
   //Update inbound
   val diffX = io.pos(0) - curPos(0)
   val diffY = io.pos(1) - curPos(1)
-  val absX = diffX.abs
-  val absY = diffY.abs
-  val inSquare = (absX < PongSettings.ballRadius.S) && (absY < PongSettings.ballRadius.S)
-  val inDiamond = absX + absY < PongSettings.ballRounding.S
+  val absX = diffX.abs.asUInt
+  val absY = diffY.abs.asUInt
+  val inSquare = (absX < PongSettings.ballRadius.U) && (absY < PongSettings.ballRadius.U)
+  val inDiamond = absX + absY < PongSettings.ballRounding.U
 
   io.inbound := inSquare && inDiamond
-  io.sideX := diffX.head(1).asBool
-  io.sideY := diffY.head(1).asBool
 
   //Check for game over
   io.outRightBound := curPos(0) > 640.S
