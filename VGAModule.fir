@@ -262,7 +262,7 @@ circuit VGAModule :
     io.inbound <= _io_inbound_T @[\\src\\main\\scala\\vga\\Ball.scala 59:14]
     node _io_outRightBound_T = gt(curPos[0], asSInt(UInt<11>("h280"))) @[\\src\\main\\scala\\vga\\Ball.scala 62:33]
     io.outRightBound <= _io_outRightBound_T @[\\src\\main\\scala\\vga\\Ball.scala 62:20]
-    node _io_outLeftBound_T = lt(curPos[0], asSInt(UInt<1>("h0"))) @[\\src\\main\\scala\\vga\\Ball.scala 63:32]
+    node _io_outLeftBound_T = leq(curPos[0], asSInt(UInt<1>("h0"))) @[\\src\\main\\scala\\vga\\Ball.scala 63:32]
     io.outLeftBound <= _io_outLeftBound_T @[\\src\\main\\scala\\vga\\Ball.scala 63:19]
 
   module GraphicsProcessor :

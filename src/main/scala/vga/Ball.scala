@@ -60,5 +60,5 @@ class BallObj(startX: Int,startY: Int) extends Module {
 
   //Check for game over
   io.outRightBound := curPos(0) > 640.S
-  io.outLeftBound := curPos(0) < 0.S
+  io.outLeftBound := curPos(0) <= 0.S
 }

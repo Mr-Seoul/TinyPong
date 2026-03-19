@@ -270,7 +270,7 @@ module BallObj(
   wire [10:0] _inDiamond_T_1 = absX + absY; // @[\\src\\main\\scala\\vga\\Ball.scala 57:24]
   wire  inDiamond = _inDiamond_T_1 < 11'hf; // @[\\src\\main\\scala\\vga\\Ball.scala 57:31]
   assign io_inbound = inSquare & inDiamond; // @[\\src\\main\\scala\\vga\\Ball.scala 59:26]
-  assign io_outLeftBound = $signed(curPos_0) < 11'sh0; // @[\\src\\main\\scala\\vga\\Ball.scala 63:32]
+  assign io_outLeftBound = $signed(curPos_0) <= 11'sh0; // @[\\src\\main\\scala\\vga\\Ball.scala 63:32]
   assign io_outRightBound = $signed(curPos_0) > 11'sh280; // @[\\src\\main\\scala\\vga\\Ball.scala 62:33]
   always @(posedge clock) begin
     if (reset) begin // @[\\src\\main\\scala\\vga\\Ball.scala 18:26]
