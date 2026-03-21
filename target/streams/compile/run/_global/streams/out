@@ -1,4 +1,23 @@
-[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 68:23] : [module GraphicsProcessor]  Reference inputAbsX is not fully initialized.[0m
-[0m[[0m[31merror[0m] [0m[0m   : inputAbsX <= mux(P1.io.inbound, P1.io.absX, mux(P2.io.inbound, P2.io.absX, VOID))[0m
-[0m[[0m[31merror[0m] [0m[0m(Compile / [31mrun[0m) firrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 68:23] : [module GraphicsProcessor]  Reference inputAbsX is not fully initialized.[0m
-[0m[[0m[31merror[0m] [0m[0m   : inputAbsX <= mux(P1.io.inbound, P1.io.absX, mux(P2.io.inbound, P2.io.absX, VOID))[0m
+[0m[[0m[31merror[0m] [0m[0mchisel3.package$ChiselException: Connection between sink (PaddleLeftObj.io.diffX: IO[SInt<5>]) and source (PaddleLeftObj.io_diffX_?: OpResult[UInt<5>]) failed @: Sink (SInt<5>) and Source (UInt<5>) have different types.[0m
+[0m[[0m[31merror[0m] [0m[0m	at ... ()[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.PaddleObj.<init>(PaddleObj.scala:45)[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.PaddleLeftObj.<init>(PaddleLeftObj.scala:3)[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.GraphicsProcessor.$anonfun$P1$2(GraphicsProcessor.scala:32)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.Module$.do_apply(Module.scala:53)[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.GraphicsProcessor.$anonfun$P1$1(GraphicsProcessor.scala:32)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.internal.plugin.package$.autoNameRecursively(package.scala:33)[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.GraphicsProcessor.<init>(GraphicsProcessor.scala:32)[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.GraphicsManager.$anonfun$gpu$2(GraphicsManager.scala:32)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.Module$.do_apply(Module.scala:53)[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.GraphicsManager.$anonfun$gpu$1(GraphicsManager.scala:32)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.internal.plugin.package$.autoNameRecursively(package.scala:33)[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.GraphicsManager.<init>(GraphicsManager.scala:32)[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.VGAModule.$anonfun$graphics$2(VGAModule.scala:30)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.Module$.do_apply(Module.scala:53)[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.VGAModule.$anonfun$graphics$1(VGAModule.scala:30)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.internal.plugin.package$.autoNameRecursively(package.scala:33)[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.VGAModule.<init>(VGAModule.scala:30)[0m
+[0m[[0m[31merror[0m] [0m[0m	at vga.Main$.$anonfun$new$13(VGAModule.scala:55)[0m
+[0m[[0m[31merror[0m] [0m[0m	at ... ()[0m
+[0m[[0m[31merror[0m] [0m[0m	at ... (Stack trace trimmed to user code only. Rerun with --full-stacktrace to see the full stack trace)[0m
+[0m[[0m[31merror[0m] [0m[0m(Compile / [31mrun[0m) chisel3.package$ChiselException: Connection between sink (PaddleLeftObj.io.diffX: IO[SInt<5>]) and source (PaddleLeftObj.io_diffX_?: OpResult[UInt<5>]) failed @: Sink (SInt<5>) and Source (UInt<5>) have different types.[0m

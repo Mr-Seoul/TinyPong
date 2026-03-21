@@ -3,10 +3,11 @@ package vga
 import chisel3._
 
 class BallObjIO() extends Bundle {
-  val pos = Input(Vec(2,SInt(DataSettings.width.W)))
+  val posX = Input(SInt(11.W))
+  val posY = Input(SInt(10.W))
   val inbound = Output(Bool())
-  val P1Pos = Input(Vec(2,SInt(DataSettings.width.W)))
-  val P2Pos = Input(Vec(2,SInt(DataSettings.width.W)))
+  val P1PosY = Input(SInt(10.W))
+  val P2PosY = Input(SInt(10.W))
   val updateLogic = Input(Bool())
   val outLeftBound = Output(Bool())
   val outRightBound = Output(Bool())
@@ -17,48 +18,51 @@ class BallObj(startX: Int,startY: Int) extends Module {
 
   val ballSpeed = RegInit(PongSettings.ballSpeed.S(6.W))
 
-  val curPos = RegInit(VecInit(startX.S(DataSettings.width.W), startY.S(DataSettings.width.W)))
+  val curPosX = RegInit(startX.S(11.W))
+  val curPosY = RegInit(startY.S(10.W))
   val goingRight = RegInit(1.B)
   val goingDown = RegInit(1.B)
 
   //Game Logic
   when(io.updateLogic) {
     //Bouncing off top and bottom wall
-    goingDown := Mux(curPos(1) < PongSettings.ballRadius.S, 1.B, Mux(curPos(1) > (480.S - PongSettings.ballRadius.S), 0.B, goingDown))
-    curPos(0) := Mux(goingRight, curPos(0) + ballSpeed, curPos(0) - ballSpeed)
-    curPos(1) := Mux(goingDown, curPos(1) + ballSpeed, curPos(1) - ballSpeed)
+    goingDown := Mux(curPosY < 0.S, 1.B, Mux(curPosY > (480.S - (2*PongSettings.ballRadius).S), 0.B, goingDown))
+    val speedX = Mux(goingRight, ballSpeed, -ballSpeed)
+    val speedY = Mux(goingDown, ballSpeed, -ballSpeed)
+    curPosX := curPosX + speedX
+    curPosY := curPosY + speedY
 
     //Bouncing off paddles
-    val topBoundary = PongSettings.paddleHeight.S + PongSettings.ballRadius.S
+    val P1Left = (PongSettings.paddleWallDist - PongSettings.paddleWidth).S
+    val P1Right = (PongSettings.paddleWallDist + 2*PongSettings.ballRadius).S
+    val P1Top = (-PongSettings.paddleHeight - PongSettings.ballRadius).S + io.P1PosY
+    val P1Bottom= io.P1PosY + PongSettings.ballRadius.S
 
-    val P1Left = (PongSettings.paddleWallDist - PongSettings.paddleWidth - PongSettings.ballRadius).S
-    val P1Right = (PongSettings.paddleWallDist + PongSettings.paddleWidth + PongSettings.ballRadius).S
+    val P2Left = (640-(PongSettings.paddleWallDist + PongSettings.paddleWidth + 2*PongSettings.ballRadius)).S
+    val P2Right = (640 -(PongSettings.paddleWallDist)).S
+    val P2Top = (-PongSettings.paddleHeight - PongSettings.ballRadius).S + io.P2PosY
+    val P2Bottom = io.P2PosY + PongSettings.ballRadius.S
 
-    val P2Left = (640-(PongSettings.paddleWallDist + PongSettings.paddleWidth + PongSettings.ballRadius)).S
-    val P2Right = (640 - (PongSettings.paddleWallDist - PongSettings.paddleWidth - PongSettings.ballRadius)).S
+    val newDir = ballSpeed(1)^ballSpeed(0)^goingDown^goingRight
 
-
-    when(!goingRight && (curPos(0) < (P1Right)) && (curPos(0) > P1Left) && ((io.P1Pos(1) - curPos(1)).abs < topBoundary)) {
+    when(!goingRight && (curPosX < (P1Right)) && (curPosX > P1Left) && (curPosY < (P1Bottom)) && (curPosY > P1Top)) {
       goingRight := 1.B
-      goingDown := ballSpeed(1)^ballSpeed(0)^goingDown^goingRight.asBool
-    }.elsewhen(goingRight && (curPos(0) < (P2Right)) && (curPos(0) > P2Left) && ((io.P2Pos(1) - curPos(1)).abs < topBoundary)) {
+      goingDown := newDir
+    }.elsewhen(goingRight && (curPosX < (P2Right)) && (curPosX > P2Left) && (curPosY < (P2Bottom)) && (curPosY > P2Top)) {
       goingRight := 0.B
-      goingDown := ballSpeed(1)^ballSpeed(0)^goingDown^goingRight.asBool
-      ballSpeed := ballSpeed + 1.S //Speed up ball
-      }
+      goingDown := newDir
+      ballSpeed := ballSpeed.asSInt + 1.S //Speed up ball
+    }
   }
 
   //Update inbound
-  val diffX = io.pos(0) - curPos(0)
-  val diffY = io.pos(1) - curPos(1)
-  val absX = diffX.abs.asUInt
-  val absY = diffY.abs.asUInt
-  val inSquare = (absX < PongSettings.ballRadius.U) && (absY < PongSettings.ballRadius.U)
-  val inDiamond = absX + absY < PongSettings.ballRounding.U
+  val inSquareX = (io.posX >= curPosX && io.posX < curPosX + (2*PongSettings.ballRadius).S)
+  val inSquareY = (io.posY >= curPosY && io.posY < curPosY + (2*PongSettings.ballRadius).S)
+  val inSquare = inSquareX && inSquareY
 
-  io.inbound := inSquare && inDiamond
+  io.inbound := inSquare
 
   //Check for game over
-  io.outRightBound := curPos(0) > 640.S
-  io.outLeftBound := curPos(0) <= 0.S
+  io.outRightBound := curPosX > 640.S
+  io.outLeftBound := curPosX <= 0.S
 }

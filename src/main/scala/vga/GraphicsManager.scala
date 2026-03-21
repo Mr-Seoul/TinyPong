@@ -18,7 +18,7 @@ class Col extends Bundle {
 // Index is from the vga, xy is from the processing unit.
 class GraphicsManagerIO extends Bundle {
   val col = new Col
-  val indexX = Input(UInt(10.W))
+  val indexX = Input(UInt(11.W))
   val indexY = Input(UInt(10.W))
   val screenDone = Input(Bool())
   val input1 = Input(Bool())
@@ -35,8 +35,6 @@ class GraphicsManager extends Module {
   gpu.io.screenDone := io.screenDone
   gpu.io.input1 := io.input1
   gpu.io.input2 := io.input2
-
-  //Add filters here later. Maybe a noise filter to make it more realistic?
 
   //Right now I have a strobe effect as a MVP. Later I will read from the buffer array once some logic is implemented
   val valid = io.indexY < 480.U && io.indexX < 640.U

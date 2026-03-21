@@ -12,10 +12,10 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\ClockModule.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	vga\Col.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\Col.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	vga\DataSettings$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\DataSettings$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	vga\DataSettings.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\DataSettings.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\DebouncerIO.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\DebouncerIO.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\DebouncerModule.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\DebouncerModule.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	vga\GraphicsManager.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\GraphicsManager.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	vga\GraphicsManagerIO.class[0m
@@ -30,10 +30,14 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\Main$delayedInit$body.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	vga\Main.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\Main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\PaddleLeftObj.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\PaddleLeftObj.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	vga\PaddleObj.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\PaddleObj.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	vga\PaddleObjIO.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\PaddleObjIO.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\PaddleRightObj.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\PaddleRightObj.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	vga\PongSettings$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\PongSettings$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	vga\PongSettings.class[0m

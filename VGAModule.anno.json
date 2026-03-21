@@ -1,5 +1,17 @@
 [
   {
+    "class":"firrtl.transforms.DedupedResult",
+    "original":"~VGAModule|DebouncerModule",
+    "duplicate":"~VGAModule|VGAModule/debouncer1:DebouncerModule",
+    "index":0.7142857142857143
+  },
+  {
+    "class":"firrtl.transforms.DedupedResult",
+    "original":"~VGAModule|DebouncerModule_1",
+    "duplicate":"~VGAModule|VGAModule/debouncer2:DebouncerModule",
+    "index":0.8571428571428571
+  },
+  {
     "class":"firrtl.EmitCircuitAnnotation",
     "emitter":"firrtl.VerilogEmitter"
   },

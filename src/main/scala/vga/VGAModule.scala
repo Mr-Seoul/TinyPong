@@ -16,11 +16,12 @@ class VGAIO extends Bundle {
 class VGAModule extends Module {
   val io = IO(new VGAIO)
 
-  //Clock module and counters
+  //Clock module and counters (For FPGA)
   //val slowClock = Module(new ClockModule)
   //val (hCounter,hWrap) = Counter(slowClock.io.clk,800)
   //val (vCounter,vWrap) = Counter(hWrap && slowClock.io.clk, 525)
 
+  //Clock module and counters (For Tiny Tapeout)
   val (hCounter,hWrap) = Counter(1.B,800)
   val (vCounter,vWrap) = Counter(hWrap, 525)
 
@@ -32,8 +33,15 @@ class VGAModule extends Module {
   graphics.io.indexX := hCounter
   graphics.io.indexY := vCounter
   graphics.io.screenDone := vWrap
-  graphics.io.input1 := io.input1
-  graphics.io.input2 := io.input2
+
+  val debouncer1 = Module(new DebouncerModule())
+  debouncer1.io.in := io.input1
+
+  val debouncer2 = Module(new DebouncerModule())
+  debouncer2.io.in := io.input2
+
+  graphics.io.input1 := debouncer1.io.out
+  graphics.io.input2 := debouncer2.io.out
   io.col.R := graphics.io.col.R
   io.col.G := graphics.io.col.G
   io.col.B := graphics.io.col.B
