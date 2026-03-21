@@ -59,7 +59,6 @@ class BallObj(startX: Int,startY: Int) extends Module {
   val inSquareX = (io.posX >= curPosX && io.posX < curPosX + (2*PongSettings.ballRadius).S)
   val inSquareY = (io.posY >= curPosY && io.posY < curPosY + (2*PongSettings.ballRadius).S)
   val inSquare = inSquareX && inSquareY
-
   io.inbound := inSquare
 
   //Check for game over
