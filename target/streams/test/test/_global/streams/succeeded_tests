@@ -1,5 +1,7 @@
 #Successful Tests
-#Mon Mar 02 22:31:56 CET 2026
+#Sun Mar 22 01:42:20 CET 2026
 buffer_tb=1772399383818
-graphicsmanager_tb=1772487047227
-vga_tb=1772487116527
+clock_tb=1774140029982
+debouncer_tb=1774140030220
+graphicsmanager_tb=1774140037813
+vga_tb=1774140140263

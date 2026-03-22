@@ -1,1 +1,1 @@
-["vga_tb","graphicsmanager_tb"]
+["clock_tb","debouncer_tb","vga_tb","graphicsmanager_tb"]

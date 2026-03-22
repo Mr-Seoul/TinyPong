@@ -2,6 +2,7 @@ package vga
 
 import chisel3._
 import chisel3.util.Counter
+import chisel3.dontTouch
 
 class VGAIO extends Bundle {
   val col = Output(new Col)
@@ -25,8 +26,6 @@ class VGAModule extends Module {
   val (hCounter,hWrap) = Counter(1.B,800)
   val (vCounter,vWrap) = Counter(hWrap, 525)
 
-  //io.Hdebug := hCounter
-  //io.Vdebug := vCounter
   val graphics = Module(new GraphicsManager())
 
   //Default IO
@@ -34,10 +33,10 @@ class VGAModule extends Module {
   graphics.io.indexY := vCounter
   graphics.io.screenDone := vWrap
 
-  val debouncer1 = Module(new DebouncerModule())
+  val debouncer1 = Module(new DebouncerModule(19))
   debouncer1.io.in := io.input1
 
-  val debouncer2 = Module(new DebouncerModule())
+  val debouncer2 = Module(new DebouncerModule(19))
   debouncer2.io.in := io.input2
 
   graphics.io.input1 := debouncer1.io.out

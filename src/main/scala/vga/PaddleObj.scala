@@ -39,7 +39,6 @@ class PaddleObj(startX: Int,startY: Int) extends Module {
     curPosY := Mux(newPos > bottomWall, bottomWall,Mux(newPos < topWall, topWall, newPos))
   }
 
-
   //XBounds
   val diffX = Wire(SInt(11.W))
   io.diffX := diffX(4, 0).asUInt
