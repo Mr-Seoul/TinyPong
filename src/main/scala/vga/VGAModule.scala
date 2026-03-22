@@ -46,6 +46,8 @@ class VGAModule extends Module {
 
   //Sync signals (following VGA standard)
   val TimingModule = Module(new VGATimingModule)
+  TimingModule.io.indexX := hCounter
+  TimingModule.io.indexY := vCounter
   io.hsync := TimingModule.io.hsync
   io.vsync := TimingModule.io.vsync
 }

@@ -1,4 +1,4 @@
-[0m[[0m[0mdebug[0m] [0m[0mPackaging C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\-name-_2.13-0.1.0.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mPackaging C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\tinypong_2.13-1.0.0.jar ...[0m
 [0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	vga[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga[0m
@@ -46,4 +46,8 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\VGAIO.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	vga\VGAModule.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\VGAModule.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\VGATimingIO.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\VGATimingIO.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vga\VGATimingModule.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Markv\OneDrive\Documents\VGA Pong\target\scala-2.13\classes\vga\VGATimingModule.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
