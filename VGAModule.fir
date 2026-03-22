@@ -1,5 +1,20 @@
 FIRRTL version 1.2.0
 circuit VGAModule :
+  module resetSynchronizer :
+    input clock : Clock
+    input reset : Reset
+    output io : { syncReset : AsyncReset} @[\\src\\main\\scala\\vga\\ResetSynchronizer.scala 11:14]
+
+    node _T = asAsyncReset(reset) @[\\src\\main\\scala\\vga\\ResetSynchronizer.scala 13:19]
+    reg resetReg1 : UInt<1>, clock with :
+      reset => (_T, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\ResetSynchronizer.scala 15:28]
+    reg resetReg2 : UInt<1>, clock with :
+      reset => (_T, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\ResetSynchronizer.scala 16:28]
+    resetReg1 <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\ResetSynchronizer.scala 17:15]
+    resetReg2 <= resetReg1 @[\\src\\main\\scala\\vga\\ResetSynchronizer.scala 18:15]
+    node _io_syncReset_T = asAsyncReset(resetReg2) @[\\src\\main\\scala\\vga\\ResetSynchronizer.scala 20:31]
+    io.syncReset <= _io_syncReset_T @[\\src\\main\\scala\\vga\\ResetSynchronizer.scala 20:18]
+
   module PaddleLeftObj :
     input clock : Clock
     input reset : Reset
@@ -231,89 +246,92 @@ circuit VGAModule :
 
     node indexPosX = asSInt(io.indexX) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 29:29]
     node indexPosY = asSInt(io.indexY) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 30:29]
-    inst P1 of PaddleLeftObj @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 32:18]
+    reg gameOver : UInt<1>, clock with :
+      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 33:25]
+    node _resetEverything_T = asUInt(reset) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:32]
+    node _resetEverything_T_1 = or(_resetEverything_T, gameOver) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:39]
+    node resetEverything = asAsyncReset(_resetEverything_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:52]
+    inst P1 of PaddleLeftObj @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 37:20]
     P1.clock <= clock
-    P1.reset <= reset
-    P1.io.input <= io.input1 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 33:15]
-    P1.io.posX <= indexPosX @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:14]
-    P1.io.posY <= indexPosY @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 35:14]
-    P1.io.updateLogic <= io.screenDone @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 36:21]
-    inst P2 of PaddleRightObj @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 38:18]
+    P1.reset <= resetEverything
+    P1.io.input <= io.input1 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 38:17]
+    P1.io.posX <= indexPosX @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 39:16]
+    P1.io.posY <= indexPosY @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 40:16]
+    P1.io.updateLogic <= io.screenDone @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 41:23]
+    inst P2 of PaddleRightObj @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 43:20]
     P2.clock <= clock
-    P2.reset <= reset
-    P2.io.input <= io.input2 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 39:15]
-    P2.io.posX <= indexPosX @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 40:14]
-    P2.io.posY <= indexPosY @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 41:14]
-    P2.io.updateLogic <= io.screenDone @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 42:21]
-    inst Ball of BallObj @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 44:20]
+    P2.reset <= resetEverything
+    P2.io.input <= io.input2 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 44:17]
+    P2.io.posX <= indexPosX @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 45:16]
+    P2.io.posY <= indexPosY @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 46:16]
+    P2.io.updateLogic <= io.screenDone @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 47:23]
+    inst Ball of BallObj @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 49:22]
     Ball.clock <= clock
-    Ball.reset <= reset
-    Ball.io.P1PosY <= P1.io.paddlePosY @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 45:18]
-    Ball.io.P2PosY <= P2.io.paddlePosY @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 46:18]
-    Ball.io.posX <= indexPosX @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 47:16]
-    Ball.io.posY <= indexPosY @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 48:16]
-    Ball.io.updateLogic <= io.screenDone @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 49:23]
-    node resetEverything = or(Ball.io.outLeftBound, Ball.io.outRightBound) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 52:46]
-    P1.reset <= resetEverything @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 53:12]
-    P2.reset <= resetEverything @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 54:12]
-    Ball.reset <= resetEverything @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 55:14]
-    node _XOR0_T = bits(io.indexX, 0, 0) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 58:23]
-    node _XOR0_T_1 = bits(io.indexY, 0, 0) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 58:38]
-    node XOR0 = xor(_XOR0_T, _XOR0_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 58:27]
-    node _XOR1_T = bits(io.indexX, 1, 1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 59:23]
-    node _XOR1_T_1 = bits(io.indexY, 1, 1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 59:38]
-    node XOR1 = xor(_XOR1_T, _XOR1_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 59:27]
-    node _XOR2_T = bits(io.indexX, 2, 2) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 60:23]
-    node _XOR2_T_1 = bits(io.indexY, 2, 2) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 60:38]
-    node XOR2 = xor(_XOR2_T, _XOR2_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 60:27]
-    node _XOR3_T = bits(io.indexX, 3, 3) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 61:23]
-    node _XOR3_T_1 = bits(io.indexY, 3, 3) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 61:38]
-    node XOR3 = xor(_XOR3_T, _XOR3_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 61:27]
-    node _XOR4_T = bits(io.indexX, 4, 4) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 62:23]
-    node _XOR4_T_1 = bits(io.indexY, 4, 4) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 62:38]
-    node XOR4 = xor(_XOR4_T, _XOR4_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 62:27]
-    node _XOR5_T = bits(io.indexX, 5, 5) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 63:23]
-    node _XOR5_T_1 = bits(io.indexY, 5, 5) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 63:38]
-    node XOR5 = xor(_XOR5_T, _XOR5_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 63:27]
-    node _BaysianDither_T = bits(io.indexY, 1, 1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:45]
-    node _BaysianDither_T_1 = bits(io.indexY, 0, 0) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:63]
-    wire _BaysianDither_WIRE : UInt<1>[4] @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:30]
-    _BaysianDither_WIRE[0] <= XOR0 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:30]
-    _BaysianDither_WIRE[1] <= _BaysianDither_T @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:30]
-    _BaysianDither_WIRE[2] <= XOR1 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:30]
-    _BaysianDither_WIRE[3] <= _BaysianDither_T_1 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:30]
-    node BaysianDither_lo = cat(_BaysianDither_WIRE[1], _BaysianDither_WIRE[0]) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:68]
-    node BaysianDither_hi = cat(_BaysianDither_WIRE[3], _BaysianDither_WIRE[2]) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:68]
-    node BaysianDither = cat(BaysianDither_hi, BaysianDither_lo) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:68]
-    wire inputAbsX : UInt<5> @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 67:23]
-    node dithered = leq(inputAbsX, BaysianDither) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 68:29]
-    when P1.io.inbound : @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 70:24]
-      inputAbsX <= P1.io.diffX @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 71:15]
-      node _io_col_R_T = cat(dithered, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 72:20]
-      io.col.R <= _io_col_R_T @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 72:14]
-      io.col.G <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 73:14]
-      io.col.B <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 74:14]
+    Ball.reset <= resetEverything
+    Ball.io.P1PosY <= P1.io.paddlePosY @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 50:20]
+    Ball.io.P2PosY <= P2.io.paddlePosY @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 51:20]
+    Ball.io.posX <= indexPosX @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 52:18]
+    Ball.io.posY <= indexPosY @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 53:18]
+    Ball.io.updateLogic <= io.screenDone @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 54:25]
+    node _gameOver_T = or(Ball.io.outLeftBound, Ball.io.outRightBound) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 55:38]
+    gameOver <= _gameOver_T @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 55:14]
+    node _XOR0_T = bits(io.indexX, 0, 0) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 58:25]
+    node _XOR0_T_1 = bits(io.indexY, 0, 0) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 58:40]
+    node XOR0 = xor(_XOR0_T, _XOR0_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 58:29]
+    node _XOR1_T = bits(io.indexX, 1, 1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 59:25]
+    node _XOR1_T_1 = bits(io.indexY, 1, 1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 59:40]
+    node XOR1 = xor(_XOR1_T, _XOR1_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 59:29]
+    node _XOR2_T = bits(io.indexX, 2, 2) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 60:25]
+    node _XOR2_T_1 = bits(io.indexY, 2, 2) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 60:40]
+    node XOR2 = xor(_XOR2_T, _XOR2_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 60:29]
+    node _XOR3_T = bits(io.indexX, 3, 3) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 61:25]
+    node _XOR3_T_1 = bits(io.indexY, 3, 3) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 61:40]
+    node XOR3 = xor(_XOR3_T, _XOR3_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 61:29]
+    node _XOR4_T = bits(io.indexX, 4, 4) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 62:25]
+    node _XOR4_T_1 = bits(io.indexY, 4, 4) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 62:40]
+    node XOR4 = xor(_XOR4_T, _XOR4_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 62:29]
+    node _XOR5_T = bits(io.indexX, 5, 5) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 63:25]
+    node _XOR5_T_1 = bits(io.indexY, 5, 5) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 63:40]
+    node XOR5 = xor(_XOR5_T, _XOR5_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 63:29]
+    node _BaysianDither_T = bits(io.indexY, 1, 1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:47]
+    node _BaysianDither_T_1 = bits(io.indexY, 0, 0) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:65]
+    wire _BaysianDither_WIRE : UInt<1>[4] @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:32]
+    _BaysianDither_WIRE[0] <= XOR0 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:32]
+    _BaysianDither_WIRE[1] <= _BaysianDither_T @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:32]
+    _BaysianDither_WIRE[2] <= XOR1 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:32]
+    _BaysianDither_WIRE[3] <= _BaysianDither_T_1 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:32]
+    node BaysianDither_lo = cat(_BaysianDither_WIRE[1], _BaysianDither_WIRE[0]) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:70]
+    node BaysianDither_hi = cat(_BaysianDither_WIRE[3], _BaysianDither_WIRE[2]) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:70]
+    node BaysianDither = cat(BaysianDither_hi, BaysianDither_lo) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 66:70]
+    wire inputAbsX : UInt<5> @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 67:25]
+    node dithered = leq(inputAbsX, BaysianDither) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 68:31]
+    when P1.io.inbound : @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 70:26]
+      inputAbsX <= P1.io.diffX @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 71:17]
+      node _io_col_R_T = cat(dithered, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 72:22]
+      io.col.R <= _io_col_R_T @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 72:16]
+      io.col.G <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 73:16]
+      io.col.B <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 74:16]
     else :
-      when P2.io.inbound : @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 75:30]
-        inputAbsX <= P2.io.diffX @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 76:15]
-        io.col.R <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 77:14]
-        node _io_col_G_T = cat(dithered, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 78:20]
-        io.col.G <= _io_col_G_T @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 78:14]
-        io.col.B <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 79:14]
+      when P2.io.inbound : @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 75:32]
+        inputAbsX <= P2.io.diffX @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 76:17]
+        io.col.R <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 77:16]
+        node _io_col_G_T = cat(dithered, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 78:22]
+        io.col.G <= _io_col_G_T @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 78:16]
+        io.col.B <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 79:16]
       else :
-        when Ball.io.inbound : @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 80:32]
-          inputAbsX <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 81:15]
-          io.col.R <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 82:14]
-          io.col.G <= UInt<2>("h3") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 83:14]
-          io.col.B <= UInt<2>("h3") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 84:14]
+        when Ball.io.inbound : @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 80:34]
+          inputAbsX <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 81:17]
+          io.col.R <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 82:16]
+          io.col.G <= UInt<2>("h3") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 83:16]
+          io.col.B <= UInt<2>("h3") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 84:16]
         else :
-          inputAbsX <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 86:15]
-          node _io_col_R_T_1 = xor(XOR5, XOR2) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 88:24]
-          io.col.R <= _io_col_R_T_1 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 88:14]
-          node _io_col_G_T_1 = xor(XOR4, XOR1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 89:24]
-          io.col.G <= _io_col_G_T_1 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 89:14]
-          node _io_col_B_T = xor(XOR3, XOR0) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 90:24]
-          io.col.B <= _io_col_B_T @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 90:14]
+          inputAbsX <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 86:17]
+          node _io_col_R_T_1 = xor(XOR5, XOR2) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 88:26]
+          io.col.R <= _io_col_R_T_1 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 88:16]
+          node _io_col_G_T_1 = xor(XOR4, XOR1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 89:26]
+          io.col.G <= _io_col_G_T_1 @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 89:16]
+          node _io_col_B_T = xor(XOR3, XOR0) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 90:26]
+          io.col.B <= _io_col_B_T @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 90:16]
 
 
   module GraphicsManager :
@@ -422,8 +440,11 @@ circuit VGAModule :
     input reset : UInt<1>
     output io : { col : { R : UInt<2>, G : UInt<2>, B : UInt<2>}, hsync : UInt<1>, vsync : UInt<1>, flip input1 : UInt<1>, flip input2 : UInt<1>} @[\\src\\main\\scala\\vga\\VGAModule.scala 16:14]
 
+    inst resetModule of resetSynchronizer @[\\src\\main\\scala\\vga\\VGAModule.scala 18:27]
+    resetModule.clock <= clock
+    resetModule.reset <= reset
     reg hCounter : UInt<10>, clock with :
-      reset => (reset, UInt<10>("h0")) @[src/main/scala/chisel3/util/Counter.scala 61:40]
+      reset => (resetModule.io.syncReset, UInt<10>("h0")) @[src/main/scala/chisel3/util/Counter.scala 61:40]
     wire hWrap : UInt<1> @[src/main/scala/chisel3/util/Counter.scala 117:24]
     hWrap <= UInt<1>("h0") @[src/main/scala/chisel3/util/Counter.scala 117:24]
     when UInt<1>("h1") : @[src/main/scala/chisel3/util/Counter.scala 118:16]
@@ -435,7 +456,7 @@ circuit VGAModule :
         hCounter <= UInt<1>("h0") @[src/main/scala/chisel3/util/Counter.scala 87:28]
       hWrap <= wrap_wrap @[src/main/scala/chisel3/util/Counter.scala 118:23]
     reg vCounter : UInt<10>, clock with :
-      reset => (reset, UInt<10>("h0")) @[src/main/scala/chisel3/util/Counter.scala 61:40]
+      reset => (resetModule.io.syncReset, UInt<10>("h0")) @[src/main/scala/chisel3/util/Counter.scala 61:40]
     wire vWrap : UInt<1> @[src/main/scala/chisel3/util/Counter.scala 117:24]
     vWrap <= UInt<1>("h0") @[src/main/scala/chisel3/util/Counter.scala 117:24]
     when hWrap : @[src/main/scala/chisel3/util/Counter.scala 118:16]
@@ -446,30 +467,30 @@ circuit VGAModule :
       when wrap_wrap_1 : @[src/main/scala/chisel3/util/Counter.scala 87:20]
         vCounter <= UInt<1>("h0") @[src/main/scala/chisel3/util/Counter.scala 87:28]
       vWrap <= wrap_wrap_1 @[src/main/scala/chisel3/util/Counter.scala 118:23]
-    inst graphics of GraphicsManager @[\\src\\main\\scala\\vga\\VGAModule.scala 27:24]
+    inst graphics of GraphicsManager @[\\src\\main\\scala\\vga\\VGAModule.scala 31:26]
     graphics.clock <= clock
-    graphics.reset <= reset
-    graphics.io.indexX <= hCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 30:22]
-    graphics.io.indexY <= vCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 31:22]
-    graphics.io.screenDone <= vWrap @[\\src\\main\\scala\\vga\\VGAModule.scala 32:26]
-    inst debouncer1 of DebouncerModule @[\\src\\main\\scala\\vga\\VGAModule.scala 35:26]
+    graphics.reset <= resetModule.io.syncReset
+    graphics.io.indexX <= hCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 34:24]
+    graphics.io.indexY <= vCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 35:24]
+    graphics.io.screenDone <= vWrap @[\\src\\main\\scala\\vga\\VGAModule.scala 36:28]
+    inst debouncer1 of DebouncerModule @[\\src\\main\\scala\\vga\\VGAModule.scala 39:28]
     debouncer1.clock <= clock
-    debouncer1.reset <= reset
-    inst debouncer2 of DebouncerModule_1 @[\\src\\main\\scala\\vga\\VGAModule.scala 36:26]
+    debouncer1.reset <= resetModule.io.syncReset
+    inst debouncer2 of DebouncerModule_1 @[\\src\\main\\scala\\vga\\VGAModule.scala 40:28]
     debouncer2.clock <= clock
-    debouncer2.reset <= reset
-    debouncer1.io.in <= io.input1 @[\\src\\main\\scala\\vga\\VGAModule.scala 37:20]
-    debouncer2.io.in <= io.input2 @[\\src\\main\\scala\\vga\\VGAModule.scala 38:20]
-    graphics.io.input1 <= debouncer1.io.out @[\\src\\main\\scala\\vga\\VGAModule.scala 41:22]
-    graphics.io.input2 <= debouncer2.io.out @[\\src\\main\\scala\\vga\\VGAModule.scala 42:22]
-    io.col.R <= graphics.io.col.R @[\\src\\main\\scala\\vga\\VGAModule.scala 43:12]
-    io.col.G <= graphics.io.col.G @[\\src\\main\\scala\\vga\\VGAModule.scala 44:12]
-    io.col.B <= graphics.io.col.B @[\\src\\main\\scala\\vga\\VGAModule.scala 45:12]
-    inst TimingModule of VGATimingModule @[\\src\\main\\scala\\vga\\VGAModule.scala 48:28]
+    debouncer2.reset <= resetModule.io.syncReset
+    debouncer1.io.in <= io.input1 @[\\src\\main\\scala\\vga\\VGAModule.scala 41:22]
+    debouncer2.io.in <= io.input2 @[\\src\\main\\scala\\vga\\VGAModule.scala 42:22]
+    graphics.io.input1 <= debouncer1.io.out @[\\src\\main\\scala\\vga\\VGAModule.scala 45:24]
+    graphics.io.input2 <= debouncer2.io.out @[\\src\\main\\scala\\vga\\VGAModule.scala 46:24]
+    io.col.R <= graphics.io.col.R @[\\src\\main\\scala\\vga\\VGAModule.scala 47:14]
+    io.col.G <= graphics.io.col.G @[\\src\\main\\scala\\vga\\VGAModule.scala 48:14]
+    io.col.B <= graphics.io.col.B @[\\src\\main\\scala\\vga\\VGAModule.scala 49:14]
+    inst TimingModule of VGATimingModule @[\\src\\main\\scala\\vga\\VGAModule.scala 52:30]
     TimingModule.clock <= clock
-    TimingModule.reset <= reset
-    TimingModule.io.indexX <= hCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 49:26]
-    TimingModule.io.indexY <= vCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 50:26]
-    io.hsync <= TimingModule.io.hsync @[\\src\\main\\scala\\vga\\VGAModule.scala 51:12]
-    io.vsync <= TimingModule.io.vsync @[\\src\\main\\scala\\vga\\VGAModule.scala 52:12]
+    TimingModule.reset <= resetModule.io.syncReset
+    TimingModule.io.indexX <= hCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 53:28]
+    TimingModule.io.indexY <= vCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 54:28]
+    io.hsync <= TimingModule.io.hsync @[\\src\\main\\scala\\vga\\VGAModule.scala 55:14]
+    io.vsync <= TimingModule.io.vsync @[\\src\\main\\scala\\vga\\VGAModule.scala 56:14]
 

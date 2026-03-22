@@ -3,13 +3,13 @@
     "class":"firrtl.transforms.DedupedResult",
     "original":"~VGAModule|DebouncerModule",
     "duplicate":"~VGAModule|VGAModule/debouncer1:DebouncerModule",
-    "index":0.625
+    "index":0.6666666666666666
   },
   {
     "class":"firrtl.transforms.DedupedResult",
     "original":"~VGAModule|DebouncerModule_1",
     "duplicate":"~VGAModule|VGAModule/debouncer2:DebouncerModule",
-    "index":0.75
+    "index":0.7777777777777778
   },
   {
     "class":"firrtl.EmitCircuitAnnotation",

@@ -1,4 +1,7 @@
-[0m[[0m[31merror[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGA Pong\src\main\scala\vga\VGATimingModule.scala:22:8: Main is already defined as object Main[0m
-[0m[[0m[31merror[0m] [0m[0mobject Main extends App {[0m
-[0m[[0m[31merror[0m] [0m[0m       ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGA Pong\src\main\scala\vga\GraphicsProcessor.scala:72:19: value Cat in package Chisel is deprecated (since Chisel 3.6): Chisel compatibility mode is deprecated. Use the chisel3 package instead.[0m
+[0m[[0m[33mwarn[0m] [0m[0m      io.col.R := Cat(dithered,1.U)[0m
+[0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Markv\OneDrive\Documents\VGA Pong\src\main\scala\vga\GraphicsProcessor.scala:78:19: value Cat in package Chisel is deprecated (since Chisel 3.6): Chisel compatibility mode is deprecated. Use the chisel3 package instead.[0m
+[0m[[0m[33mwarn[0m] [0m[0m      io.col.G := Cat(dithered,1.U)[0m
+[0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mtwo warnings found[0m

@@ -15,41 +15,46 @@ class VGAIO extends Bundle {
 class VGAModule extends Module {
   val io = IO(new VGAIO)
 
-  //Clock module and counters (For FPGA)
-  //val slowClock = Module(new ClockModule)
-  //val (hCounter,hWrap) = Counter(slowClock.io.clk,800)
-  //val (vCounter,vWrap) = Counter(hWrap && slowClock.io.clk, 525)
+  val resetModule = Module(new resetSynchronizer())
+  val syncReset = resetModule.io.syncReset
 
-  //Clock module and counters (For Tiny Tapeout)
-  val (hCounter,hWrap) = Counter(1.B,800)
-  val (vCounter,vWrap) = Counter(hWrap, 525)
+  withReset(syncReset) {
+    //Clock module and counters (For FPGA)
+    //val slowClock = Module(new ClockModule)
+    //val (hCounter,hWrap) = Counter(slowClock.io.clk,800)
+    //val (vCounter,vWrap) = Counter(hWrap && slowClock.io.clk, 525)
 
-  val graphics = Module(new GraphicsManager())
+    //Clock module and counters (For Tiny Tapeout)
+    val (hCounter,hWrap) = Counter(1.B,800)
+    val (vCounter,vWrap) = Counter(hWrap, 525)
 
-  //Default IO for graphics
-  graphics.io.indexX := hCounter
-  graphics.io.indexY := vCounter
-  graphics.io.screenDone := vWrap
+    val graphics = Module(new GraphicsManager())
 
-  //Input Debouncing
-  val debouncer1 = Module(new DebouncerModule(19))
-  val debouncer2 = Module(new DebouncerModule(19))
-  debouncer1.io.in := io.input1
-  debouncer2.io.in := io.input2
+    //Default IO for graphics
+    graphics.io.indexX := hCounter
+    graphics.io.indexY := vCounter
+    graphics.io.screenDone := vWrap
 
-  //Graphics and colour output
-  graphics.io.input1 := debouncer1.io.out
-  graphics.io.input2 := debouncer2.io.out
-  io.col.R := graphics.io.col.R
-  io.col.G := graphics.io.col.G
-  io.col.B := graphics.io.col.B
+    //Input Debouncing
+    val debouncer1 = Module(new DebouncerModule(19))
+    val debouncer2 = Module(new DebouncerModule(19))
+    debouncer1.io.in := io.input1
+    debouncer2.io.in := io.input2
 
-  //Sync signals (following VGA standard)
-  val TimingModule = Module(new VGATimingModule)
-  TimingModule.io.indexX := hCounter
-  TimingModule.io.indexY := vCounter
-  io.hsync := TimingModule.io.hsync
-  io.vsync := TimingModule.io.vsync
+    //Graphics and colour output
+    graphics.io.input1 := debouncer1.io.out
+    graphics.io.input2 := debouncer2.io.out
+    io.col.R := graphics.io.col.R
+    io.col.G := graphics.io.col.G
+    io.col.B := graphics.io.col.B
+
+    //Sync signals (following VGA standard)
+    val TimingModule = Module(new VGATimingModule)
+    TimingModule.io.indexX := hCounter
+    TimingModule.io.indexY := vCounter
+    io.hsync := TimingModule.io.hsync
+    io.vsync := TimingModule.io.vsync
+  }
 }
 
 object Main extends App {
