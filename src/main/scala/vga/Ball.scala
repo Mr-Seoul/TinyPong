@@ -62,7 +62,7 @@ class BallObj(startX: Int,startY: Int) extends Module {
   val inSquare = inSquareX && inSquareY
   io.inbound := inSquare
 
-  //Check for game over (CurposX < 0 is more optimal, but if the ball position is stuck at (0,0), it will reset)
+  //Check for game over (CurposX < 0 is more optimal due to not needing to check for 0 (only the signage), but if the ball position is stuck at (0,0), it will reset)
   io.outRightBound := curPosX > 640.S
   io.outLeftBound := curPosX <= 0.S
 }

@@ -23,7 +23,7 @@ class DebouncerModule(maxRegSize : Int) extends Module {
   val out = RegInit(0.B)
   io.out := out
 
-  //Debouncing logic (if stable for long enough, change the output)
+  //Debouncing logic (If the input is different from before, change if stable for long enough)
   when (sync2 =/= out) {
     count := count + 1.U
     when (count === maxVal.U) {
