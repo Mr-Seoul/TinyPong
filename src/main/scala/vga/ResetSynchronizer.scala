@@ -11,7 +11,7 @@ class resetSynchronizer extends Module {
   val io = IO(new resetSynchronizerIO)
 
   withReset(reset.asAsyncReset) {
-    //Reset Pipeline. Delays the reset clock to make sure that the signal is cleanish
+    //Reset Pipeline. Delays the reset clock to make sure that the signal is somewhat clean (you might want more registers, but this saves on area)
     val resetReg1 = RegInit(1.B)
     val resetReg2 = RegInit(1.B)
     resetReg1 := 0.B

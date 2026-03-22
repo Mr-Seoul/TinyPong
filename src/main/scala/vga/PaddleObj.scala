@@ -23,7 +23,7 @@ class PaddleObj(startX: Int,startY: Int) extends Module {
   val bottomWall = 480.S
 
   when (io.updateLogic) {
-    //Gravity logic
+    //Gravity logic (g = 1 here)
     when (io.input) {
       velocity := -PongSettings.paddleJumpSpeed.S
     } .elsewhen (curPosY === topWall) {
@@ -34,19 +34,17 @@ class PaddleObj(startX: Int,startY: Int) extends Module {
       velocity := velocity + PongSettings.paddleGravity.S
     }
 
-    //Clamp position inbetween two top walls
+    //Clamp position in between two top walls (This saves some space as the ball will clip a bit into the walls, but does save logic)
     val newPos = curPosY + velocity
     curPosY := Mux(newPos > bottomWall, bottomWall,Mux(newPos < topWall, topWall, newPos))
   }
 
-  //XBounds
+  //Precompute Bounds to hope that the chisel will optimize them away
   val diffX = Wire(SInt(11.W))
   io.diffX := diffX(4, 0).asUInt
-  val inXBound = (!diffX(10)) && (diffX <= PongSettings.paddleWidth.S)
-
-  //YBounds
   val Top = (-PongSettings.paddleHeight.S) + curPosY
   val Bottom = curPosY
+  val inXBound = (!diffX(10)) && (diffX <= PongSettings.paddleWidth.S)
   val inYBound = (io.posY >= Top) && (io.posY <= Bottom)
 
   //Bound detection

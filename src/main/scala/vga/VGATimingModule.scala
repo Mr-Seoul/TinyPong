@@ -12,7 +12,7 @@ class VGATimingIO extends Bundle {
 class VGATimingModule extends Module {
   val io = IO(new VGATimingIO)
 
-  //Sync signals
+  //Sync signals (This is just following the VGA protocol)
   io.hsync := Mux(io.indexX > 655.U && io.indexX < 752.U,0.U,1.U)
   io.vsync := Mux(io.indexY > 489.U && io.indexY < 492.U,0.U,1.U)
 }

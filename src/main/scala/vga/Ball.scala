@@ -26,14 +26,14 @@ class BallObj(startX: Int,startY: Int) extends Module {
 
   //Game Logic
   when(io.updateLogic) {
-    //Bouncing off top and bottom wall
+    //Bouncing off top and bottom wall (This will clip into the walls, but saves on area)
     goingDown := Mux(curPosY < 0.S, 1.B, Mux(curPosY > (480.S - (2*PongSettings.ballRadius).S), 0.B, goingDown))
     val speedX = Mux(goingRight, ballSpeed, -ballSpeed)
     val speedY = Mux(goingDown, ballSpeed, -ballSpeed)
     curPosX := curPosX + speedX
     curPosY := curPosY + speedY
 
-    //Bouncing off paddles
+    //Bouncing off paddles (This will clip into the paddles, but saves on logic gates / area utilisation)
     val P1Left = (PongSettings.paddleWallDist - PongSettings.paddleWidth).S
     val P1Right = (PongSettings.paddleWallDist + 2*PongSettings.ballRadius).S
     val P1Top = (-PongSettings.paddleHeight - PongSettings.ballRadius).S + io.P1PosY
@@ -56,13 +56,13 @@ class BallObj(startX: Int,startY: Int) extends Module {
     }
   }
 
-  //Update inbound
+  //Update bounds (check if inside square)
   val inSquareX = (io.posX >= curPosX && io.posX < curPosX + (2*PongSettings.ballRadius).S)
   val inSquareY = (io.posY >= curPosY && io.posY < curPosY + (2*PongSettings.ballRadius).S)
   val inSquare = inSquareX && inSquareY
   io.inbound := inSquare
 
-  //Check for game over
+  //Check for game over (CurposX < 0 is more optimal, but if the ball position is stuck at (0,0), it will reset)
   io.outRightBound := curPosX > 640.S
   io.outLeftBound := curPosX <= 0.S
 }

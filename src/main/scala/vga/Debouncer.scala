@@ -11,7 +11,7 @@ class DebouncerIO extends Bundle {
 class DebouncerModule(maxRegSize : Int) extends Module {
   val io = IO(new DebouncerIO)
 
-  //Syncing pipeline
+  //Syncing pipeline (3 registers may be a bit much, but at least the output is stable)
   val sync0 = RegNext(io.in)
   val sync1 = RegNext(sync0)
   val sync2 = RegNext(sync1)
@@ -23,7 +23,7 @@ class DebouncerModule(maxRegSize : Int) extends Module {
   val out = RegInit(0.B)
   io.out := out
 
-  //Debouncing logic
+  //Debouncing logic (if stable for long enough, change the output)
   when (sync2 =/= out) {
     count := count + 1.U
     when (count === maxVal.U) {

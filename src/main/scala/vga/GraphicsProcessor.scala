@@ -29,7 +29,7 @@ class GraphicsProcessor extends Module {
   val indexPosX = io.indexX.asSInt
   val indexPosY = io.indexY.asSInt
 
-  //if out of bounds, reset everything to initial position.
+  //if out of bounds, reset the game
   val gameOver = RegInit(0.B)
   val resetEverything = (reset.asBool || gameOver).asAsyncReset
 
@@ -84,7 +84,7 @@ class GraphicsProcessor extends Module {
       io.col.B := 3.U
     } .otherwise {
       inputAbsX := 0.U
-      //More interesting Background
+      //More interesting Background (Found this pattern when experimenting, pretty cool)
       io.col.R := (XOR5) ^ (XOR2)
       io.col.G := (XOR4) ^ (XOR1)
       io.col.B := (XOR3) ^ (XOR0)

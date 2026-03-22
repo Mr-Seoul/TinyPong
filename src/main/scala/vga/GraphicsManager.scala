@@ -28,7 +28,7 @@ class GraphicsManagerIO extends Bundle {
 class GraphicsManager extends Module {
   val io = IO(new GraphicsManagerIO)
 
-  //Base graphics
+  //Base graphics (The graphics processor just decided the colours of the pixels)
   val gpu = Module(new GraphicsProcessor)
   gpu.io.indexX := io.indexX
   gpu.io.indexY := io.indexY
@@ -36,7 +36,7 @@ class GraphicsManager extends Module {
   gpu.io.input1 := io.input1
   gpu.io.input2 := io.input2
 
-  //Output colour if valid
+  //Output colour if valid (Otherwise you get VGA protocol issues)
   val valid = io.indexY < 480.U && io.indexX < 640.U
   io.col.R := Mux(valid,gpu.io.col.R,0.U)
   io.col.G := Mux(valid,gpu.io.col.G,0.U)

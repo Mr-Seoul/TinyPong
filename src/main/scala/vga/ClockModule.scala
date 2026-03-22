@@ -7,7 +7,7 @@ class ClockIO extends Bundle {
   val clk = Output(Bool())
 }
 
-//Slows 100 Mhz clock to 25 mhz clock
+//Slows 100 Mhz clock to 25 mhz clock for FPGA
 class ClockModule extends Module {
   val io = IO(new ClockIO)
 

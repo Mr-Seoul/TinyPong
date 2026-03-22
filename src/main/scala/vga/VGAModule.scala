@@ -29,18 +29,16 @@ class VGAModule extends Module {
 
     val graphics = Module(new GraphicsManager())
 
-    //Default IO for graphics
-    graphics.io.indexX := hCounter
-    graphics.io.indexY := vCounter
-    graphics.io.screenDone := vWrap
-
-    //Input Debouncing
+    //Input Debouncing (19 bits were chosen for 20 ms of deboucning)
     val debouncer1 = Module(new DebouncerModule(19))
     val debouncer2 = Module(new DebouncerModule(19))
     debouncer1.io.in := io.input1
     debouncer2.io.in := io.input2
 
-    //Graphics and colour output
+    //Default IO for graphics (connect the graphics manager)
+    graphics.io.indexX := hCounter
+    graphics.io.indexY := vCounter
+    graphics.io.screenDone := vWrap
     graphics.io.input1 := debouncer1.io.out
     graphics.io.input2 := debouncer2.io.out
     io.col.R := graphics.io.col.R
