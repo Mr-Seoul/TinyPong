@@ -2,7 +2,6 @@ package vga
 
 import chisel3._
 import chisel3.util.Counter
-import chisel3.dontTouch
 
 class VGAIO extends Bundle {
   val col = Output(new Col)
