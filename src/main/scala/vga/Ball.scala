@@ -20,6 +20,7 @@ class BallObj(startX: Int,startY: Int) extends Module {
 
   val curPosX = RegInit(startX.S(11.W))
   val curPosY = RegInit(startY.S(10.W))
+
   val goingRight = RegInit(1.B)
   val goingDown = RegInit(1.B)
 

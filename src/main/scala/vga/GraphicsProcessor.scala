@@ -54,6 +54,7 @@ class GraphicsProcessor extends Module {
   P2.reset := resetEverything
   Ball.reset := resetEverything
 
+  //Xor Precomputation
   val XOR0 = io.indexX(0) ^ io.indexY(0)
   val XOR1 = io.indexX(1) ^ io.indexY(1)
   val XOR2 = io.indexX(2) ^ io.indexY(2)

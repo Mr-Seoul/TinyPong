@@ -1,7 +1,11 @@
 #Successful Tests
-#Sun Mar 22 01:42:20 CET 2026
+#Sun Mar 22 19:11:20 CET 2026
+ball_tb=1774203075788
 buffer_tb=1772399383818
-clock_tb=1774140029982
-debouncer_tb=1774140030220
-graphicsmanager_tb=1774140037813
-vga_tb=1774140140263
+clock_tb=1774203074170
+debouncer_tb=1774203074974
+graphicsmanager_tb=1774203080508
+leftPaddle_tb=1774203076234
+rightPaddle_tb=1774203076240
+vga_tb=1774201237295
+vgatiming_tb=1774203077243

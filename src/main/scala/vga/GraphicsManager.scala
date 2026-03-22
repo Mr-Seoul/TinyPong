@@ -36,7 +36,7 @@ class GraphicsManager extends Module {
   gpu.io.input1 := io.input1
   gpu.io.input2 := io.input2
 
-  //Right now I have a strobe effect as a MVP. Later I will read from the buffer array once some logic is implemented
+  //Output colour if valid
   val valid = io.indexY < 480.U && io.indexX < 640.U
   io.col.R := Mux(valid,gpu.io.col.R,0.U)
   io.col.G := Mux(valid,gpu.io.col.G,0.U)
