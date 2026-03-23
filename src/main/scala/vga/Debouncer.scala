@@ -12,9 +12,12 @@ class DebouncerModule(maxRegSize : Int) extends Module {
   val io = IO(new DebouncerIO)
 
   //Syncing pipeline (3 registers may be a bit much, but at least the output is stable)
-  val sync0 = RegNext(io.in)
-  val sync1 = RegNext(sync0)
-  val sync2 = RegNext(sync1)
+  val sync0 = RegInit(0.B)
+  val sync1 = RegInit(0.B)
+  val sync2 = RegInit(0.B)
+  sync0 := io.in
+  sync1 := sync0
+  sync2 := sync1
 
   val count = RegInit(0.U(maxRegSize.W))
   val maxVal = (1 << maxRegSize) - 1

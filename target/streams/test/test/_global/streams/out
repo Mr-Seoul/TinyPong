@@ -1,10 +1,10 @@
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(clock_tb, org.scalatest.tools.Framework$$anon$1@2e865e0b, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(ball_tb, org.scalatest.tools.Framework$$anon$1@2e865e0b, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(graphicsmanager_tb, org.scalatest.tools.Framework$$anon$1@2e865e0b, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(rightPaddle_tb, org.scalatest.tools.Framework$$anon$1@2e865e0b, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(debouncer_tb, org.scalatest.tools.Framework$$anon$1@2e865e0b, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(vgatiming_tb, org.scalatest.tools.Framework$$anon$1@2e865e0b, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(leftPaddle_tb, org.scalatest.tools.Framework$$anon$1@2e865e0b, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(ball_tb, org.scalatest.tools.Framework$$anon$1@5c8b22b6, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(graphicsmanager_tb, org.scalatest.tools.Framework$$anon$1@5c8b22b6, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(leftPaddle_tb, org.scalatest.tools.Framework$$anon$1@5c8b22b6, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(clock_tb, org.scalatest.tools.Framework$$anon$1@5c8b22b6, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(rightPaddle_tb, org.scalatest.tools.Framework$$anon$1@5c8b22b6, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(debouncer_tb, org.scalatest.tools.Framework$$anon$1@5c8b22b6, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(vgatiming_tb, org.scalatest.tools.Framework$$anon$1@5c8b22b6, false, [SuiteSelector])[0m
 [0m[[0m[0minfo[0m] [0m[0m[32mclock_tb:[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[32m- should clock every 4 cycles[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[32mdebouncer_tb:[0m[0m
@@ -29,7 +29,7 @@
 [0m[[0m[0minfo[0m] [0m[0m[32m- should vsync[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[32mgraphicsmanager_tb:[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[32m- should not write data in inactive area[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 19 seconds, 361 milliseconds.[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 14 seconds, 520 milliseconds.[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[36mTotal number of tests run: 17[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[36mSuites: completed 7, aborted 0[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 17, failed 0, canceled 0, ignored 0, pending 0[0m[0m

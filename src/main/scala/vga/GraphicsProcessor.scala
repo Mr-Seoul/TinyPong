@@ -31,7 +31,7 @@ class GraphicsProcessor extends Module {
 
   //if out of bounds, reset the game
   val gameOver = RegInit(0.B)
-  val resetEverything = (reset.asBool || gameOver).asAsyncReset
+  val resetEverything = reset.asBool || gameOver
 
   withReset(resetEverything) {
     val P1 = Module(new PaddleLeftObj(PongSettings.paddleWallDist + PongSettings.paddleWidth,240))

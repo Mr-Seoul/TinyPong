@@ -2,7 +2,7 @@ FIRRTL version 1.2.0
 circuit GraphicsManager :
   module PaddleLeftObj :
     input clock : Clock
-    input reset : AsyncReset
+    input reset : UInt<1>
     input io_input : UInt<1> @[\\src\\main\\scala\\vga\\PaddleObj.scala 16:14]
     input io_posX : SInt<11> @[\\src\\main\\scala\\vga\\PaddleObj.scala 16:14]
     input io_posY : SInt<10> @[\\src\\main\\scala\\vga\\PaddleObj.scala 16:14]
@@ -12,9 +12,9 @@ circuit GraphicsManager :
     output io_diffX : UInt<5> @[\\src\\main\\scala\\vga\\PaddleObj.scala 16:14]
 
     reg curPosY : SInt<10>, clock with :
-      reset => (reset, asSInt(UInt<10>("hf0"))) @[\\src\\main\\scala\\vga\\PaddleObj.scala 19:24]
+      reset => (UInt<1>("h0"), curPosY) @[\\src\\main\\scala\\vga\\PaddleObj.scala 19:24]
     reg velocity : SInt<6>, clock with :
-      reset => (reset, asSInt(UInt<6>("h0"))) @[\\src\\main\\scala\\vga\\PaddleObj.scala 20:25]
+      reset => (UInt<1>("h0"), velocity) @[\\src\\main\\scala\\vga\\PaddleObj.scala 20:25]
     node _velocity_T = sub(asSInt(UInt<1>("h0")), asSInt(UInt<5>("h8"))) @[\\src\\main\\scala\\vga\\PaddleObj.scala 28:19]
     node _velocity_T_1 = tail(_velocity_T, 1) @[\\src\\main\\scala\\vga\\PaddleObj.scala 28:19]
     node _velocity_T_2 = asSInt(_velocity_T_1) @[\\src\\main\\scala\\vga\\PaddleObj.scala 28:19]
@@ -57,12 +57,12 @@ circuit GraphicsManager :
     io_inbound <= inSquare @[\\src\\main\\scala\\vga\\PaddleObj.scala 52:14]
     io_paddlePosY <= curPosY @[\\src\\main\\scala\\vga\\PaddleObj.scala 54:17]
     io_diffX <= _io_diffX_T @[\\src\\main\\scala\\vga\\PaddleObj.scala 44:12]
-    curPosY <= _GEN_4 @[\\src\\main\\scala\\vga\\PaddleObj.scala 19:{24,24}]
-    velocity <= _GEN_3 @[\\src\\main\\scala\\vga\\PaddleObj.scala 20:{25,25}]
+    curPosY <= mux(reset, asSInt(UInt<10>("hf0")), _GEN_4) @[\\src\\main\\scala\\vga\\PaddleObj.scala 19:{24,24}]
+    velocity <= mux(reset, asSInt(UInt<6>("h0")), _GEN_3) @[\\src\\main\\scala\\vga\\PaddleObj.scala 20:{25,25}]
 
   module PaddleRightObj :
     input clock : Clock
-    input reset : AsyncReset
+    input reset : UInt<1>
     input io_input : UInt<1> @[\\src\\main\\scala\\vga\\PaddleObj.scala 16:14]
     input io_posX : SInt<11> @[\\src\\main\\scala\\vga\\PaddleObj.scala 16:14]
     input io_posY : SInt<10> @[\\src\\main\\scala\\vga\\PaddleObj.scala 16:14]
@@ -72,9 +72,9 @@ circuit GraphicsManager :
     output io_diffX : UInt<5> @[\\src\\main\\scala\\vga\\PaddleObj.scala 16:14]
 
     reg curPosY : SInt<10>, clock with :
-      reset => (reset, asSInt(UInt<10>("hf0"))) @[\\src\\main\\scala\\vga\\PaddleObj.scala 19:24]
+      reset => (UInt<1>("h0"), curPosY) @[\\src\\main\\scala\\vga\\PaddleObj.scala 19:24]
     reg velocity : SInt<6>, clock with :
-      reset => (reset, asSInt(UInt<6>("h0"))) @[\\src\\main\\scala\\vga\\PaddleObj.scala 20:25]
+      reset => (UInt<1>("h0"), velocity) @[\\src\\main\\scala\\vga\\PaddleObj.scala 20:25]
     node _velocity_T = sub(asSInt(UInt<1>("h0")), asSInt(UInt<5>("h8"))) @[\\src\\main\\scala\\vga\\PaddleObj.scala 28:19]
     node _velocity_T_1 = tail(_velocity_T, 1) @[\\src\\main\\scala\\vga\\PaddleObj.scala 28:19]
     node _velocity_T_2 = asSInt(_velocity_T_1) @[\\src\\main\\scala\\vga\\PaddleObj.scala 28:19]
@@ -117,12 +117,12 @@ circuit GraphicsManager :
     io_inbound <= inSquare @[\\src\\main\\scala\\vga\\PaddleObj.scala 52:14]
     io_paddlePosY <= curPosY @[\\src\\main\\scala\\vga\\PaddleObj.scala 54:17]
     io_diffX <= _io_diffX_T @[\\src\\main\\scala\\vga\\PaddleObj.scala 44:12]
-    curPosY <= _GEN_4 @[\\src\\main\\scala\\vga\\PaddleObj.scala 19:{24,24}]
-    velocity <= _GEN_3 @[\\src\\main\\scala\\vga\\PaddleObj.scala 20:{25,25}]
+    curPosY <= mux(reset, asSInt(UInt<10>("hf0")), _GEN_4) @[\\src\\main\\scala\\vga\\PaddleObj.scala 19:{24,24}]
+    velocity <= mux(reset, asSInt(UInt<6>("h0")), _GEN_3) @[\\src\\main\\scala\\vga\\PaddleObj.scala 20:{25,25}]
 
   module BallObj :
     input clock : Clock
-    input reset : AsyncReset
+    input reset : UInt<1>
     input io_posX : SInt<11> @[\\src\\main\\scala\\vga\\Ball.scala 17:14]
     input io_posY : SInt<10> @[\\src\\main\\scala\\vga\\Ball.scala 17:14]
     output io_inbound : UInt<1> @[\\src\\main\\scala\\vga\\Ball.scala 17:14]
@@ -133,15 +133,15 @@ circuit GraphicsManager :
     output io_outRightBound : UInt<1> @[\\src\\main\\scala\\vga\\Ball.scala 17:14]
 
     reg ballSpeed : SInt<6>, clock with :
-      reset => (reset, asSInt(UInt<6>("h2"))) @[\\src\\main\\scala\\vga\\Ball.scala 19:26]
+      reset => (UInt<1>("h0"), ballSpeed) @[\\src\\main\\scala\\vga\\Ball.scala 19:26]
     reg curPosX : SInt<11>, clock with :
-      reset => (reset, asSInt(UInt<11>("h140"))) @[\\src\\main\\scala\\vga\\Ball.scala 21:24]
+      reset => (UInt<1>("h0"), curPosX) @[\\src\\main\\scala\\vga\\Ball.scala 21:24]
     reg curPosY : SInt<10>, clock with :
-      reset => (reset, asSInt(UInt<10>("h40"))) @[\\src\\main\\scala\\vga\\Ball.scala 22:24]
+      reset => (UInt<1>("h0"), curPosY) @[\\src\\main\\scala\\vga\\Ball.scala 22:24]
     reg goingRight : UInt<1>, clock with :
-      reset => (reset, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\Ball.scala 24:27]
+      reset => (UInt<1>("h0"), goingRight) @[\\src\\main\\scala\\vga\\Ball.scala 24:27]
     reg goingDown : UInt<1>, clock with :
-      reset => (reset, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\Ball.scala 25:26]
+      reset => (UInt<1>("h0"), goingDown) @[\\src\\main\\scala\\vga\\Ball.scala 25:26]
     node _goingDown_T = lt(curPosY, asSInt(UInt<1>("h0"))) @[\\src\\main\\scala\\vga\\Ball.scala 30:30]
     node _goingDown_T_1 = sub(asSInt(UInt<10>("h1e0")), asSInt(UInt<6>("h10"))) @[\\src\\main\\scala\\vga\\Ball.scala 30:63]
     node _goingDown_T_2 = tail(_goingDown_T_1, 1) @[\\src\\main\\scala\\vga\\Ball.scala 30:63]
@@ -229,11 +229,11 @@ circuit GraphicsManager :
     io_inbound <= inSquare @[\\src\\main\\scala\\vga\\Ball.scala 63:14]
     io_outLeftBound <= _io_outLeftBound_T @[\\src\\main\\scala\\vga\\Ball.scala 67:19]
     io_outRightBound <= _io_outRightBound_T @[\\src\\main\\scala\\vga\\Ball.scala 66:20]
-    ballSpeed <= _GEN_10 @[\\src\\main\\scala\\vga\\Ball.scala 19:{26,26}]
-    curPosX <= _GEN_7 @[\\src\\main\\scala\\vga\\Ball.scala 21:{24,24}]
-    curPosY <= _GEN_8 @[\\src\\main\\scala\\vga\\Ball.scala 22:{24,24}]
-    goingRight <= _GEN_9 @[\\src\\main\\scala\\vga\\Ball.scala 24:{27,27}]
-    goingDown <= _GEN_6 @[\\src\\main\\scala\\vga\\Ball.scala 25:{26,26}]
+    ballSpeed <= mux(reset, asSInt(UInt<6>("h2")), _GEN_10) @[\\src\\main\\scala\\vga\\Ball.scala 19:{26,26}]
+    curPosX <= mux(reset, asSInt(UInt<11>("h140")), _GEN_7) @[\\src\\main\\scala\\vga\\Ball.scala 21:{24,24}]
+    curPosY <= mux(reset, asSInt(UInt<10>("h40")), _GEN_8) @[\\src\\main\\scala\\vga\\Ball.scala 22:{24,24}]
+    goingRight <= mux(reset, UInt<1>("h1"), _GEN_9) @[\\src\\main\\scala\\vga\\Ball.scala 24:{27,27}]
+    goingDown <= mux(reset, UInt<1>("h1"), _GEN_6) @[\\src\\main\\scala\\vga\\Ball.scala 25:{26,26}]
 
   module GraphicsProcessor :
     input clock : Clock
@@ -254,9 +254,8 @@ circuit GraphicsManager :
     node indexPosY = asSInt(io_indexY) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 30:29]
     reg gameOver : UInt<1>, clock with :
       reset => (UInt<1>("h0"), gameOver) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 33:25]
-    node _resetEverything_T = asUInt(reset) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:32]
-    node _resetEverything_T_1 = or(_resetEverything_T, gameOver) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:39]
-    node resetEverything = asAsyncReset(_resetEverything_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:52]
+    node _resetEverything_T = asUInt(reset) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:31]
+    node resetEverything = or(_resetEverything_T, gameOver) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:38]
     node _gameOver_T = or(Ball.io_outLeftBound, Ball.io_outRightBound) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 55:38]
     node _XOR0_T = bits(io_indexX, 0, 0) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 58:25]
     node _XOR0_T_1 = bits(io_indexY, 0, 0) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 58:40]
