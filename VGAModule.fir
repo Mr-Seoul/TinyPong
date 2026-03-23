@@ -248,9 +248,8 @@ circuit VGAModule :
     node indexPosY = asSInt(io.indexY) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 30:29]
     reg gameOver : UInt<1>, clock with :
       reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 33:25]
-    node _resetEverything_T = asUInt(reset) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:32]
-    node _resetEverything_T_1 = or(_resetEverything_T, gameOver) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:39]
-    node resetEverything = asAsyncReset(_resetEverything_T_1) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:52]
+    node _resetEverything_T = asUInt(reset) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:31]
+    node resetEverything = or(_resetEverything_T, gameOver) @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 34:38]
     inst P1 of PaddleLeftObj @[\\src\\main\\scala\\vga\\GraphicsProcessor.scala 37:20]
     P1.clock <= clock
     P1.reset <= resetEverything
@@ -363,29 +362,29 @@ circuit VGAModule :
     output io : { flip in : UInt<1>, out : UInt<1>} @[\\src\\main\\scala\\vga\\Debouncer.scala 12:14]
 
     reg sync0 : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), sync0) @[\\src\\main\\scala\\vga\\Debouncer.scala 15:22]
-    sync0 <= io.in @[\\src\\main\\scala\\vga\\Debouncer.scala 15:22]
+      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 15:22]
     reg sync1 : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), sync1) @[\\src\\main\\scala\\vga\\Debouncer.scala 16:22]
-    sync1 <= sync0 @[\\src\\main\\scala\\vga\\Debouncer.scala 16:22]
+      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 16:22]
     reg sync2 : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), sync2) @[\\src\\main\\scala\\vga\\Debouncer.scala 17:22]
-    sync2 <= sync1 @[\\src\\main\\scala\\vga\\Debouncer.scala 17:22]
+      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 17:22]
+    sync0 <= io.in @[\\src\\main\\scala\\vga\\Debouncer.scala 18:9]
+    sync1 <= sync0 @[\\src\\main\\scala\\vga\\Debouncer.scala 19:9]
+    sync2 <= sync1 @[\\src\\main\\scala\\vga\\Debouncer.scala 20:9]
     reg count : UInt<19>, clock with :
-      reset => (reset, UInt<19>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 19:22]
+      reset => (reset, UInt<19>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 22:22]
     reg out : UInt<1>, clock with :
-      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 23:20]
-    io.out <= out @[\\src\\main\\scala\\vga\\Debouncer.scala 24:10]
-    node _T = neq(sync2, out) @[\\src\\main\\scala\\vga\\Debouncer.scala 27:15]
-    when _T : @[\\src\\main\\scala\\vga\\Debouncer.scala 27:24]
-      node _count_T = add(count, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\Debouncer.scala 28:20]
-      node _count_T_1 = tail(_count_T, 1) @[\\src\\main\\scala\\vga\\Debouncer.scala 28:20]
-      count <= _count_T_1 @[\\src\\main\\scala\\vga\\Debouncer.scala 28:11]
-      node _T_1 = eq(count, UInt<19>("h7ffff")) @[\\src\\main\\scala\\vga\\Debouncer.scala 29:17]
-      when _T_1 : @[\\src\\main\\scala\\vga\\Debouncer.scala 29:31]
-        out <= sync2 @[\\src\\main\\scala\\vga\\Debouncer.scala 30:11]
+      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 26:20]
+    io.out <= out @[\\src\\main\\scala\\vga\\Debouncer.scala 27:10]
+    node _T = neq(sync2, out) @[\\src\\main\\scala\\vga\\Debouncer.scala 30:15]
+    when _T : @[\\src\\main\\scala\\vga\\Debouncer.scala 30:24]
+      node _count_T = add(count, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\Debouncer.scala 31:20]
+      node _count_T_1 = tail(_count_T, 1) @[\\src\\main\\scala\\vga\\Debouncer.scala 31:20]
+      count <= _count_T_1 @[\\src\\main\\scala\\vga\\Debouncer.scala 31:11]
+      node _T_1 = eq(count, UInt<19>("h7ffff")) @[\\src\\main\\scala\\vga\\Debouncer.scala 32:17]
+      when _T_1 : @[\\src\\main\\scala\\vga\\Debouncer.scala 32:31]
+        out <= sync2 @[\\src\\main\\scala\\vga\\Debouncer.scala 33:11]
     else :
-      count <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\Debouncer.scala 33:11]
+      count <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\Debouncer.scala 36:11]
 
 
   module DebouncerModule_1 :
@@ -394,29 +393,29 @@ circuit VGAModule :
     output io : { flip in : UInt<1>, out : UInt<1>} @[\\src\\main\\scala\\vga\\Debouncer.scala 12:14]
 
     reg sync0 : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), sync0) @[\\src\\main\\scala\\vga\\Debouncer.scala 15:22]
-    sync0 <= io.in @[\\src\\main\\scala\\vga\\Debouncer.scala 15:22]
+      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 15:22]
     reg sync1 : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), sync1) @[\\src\\main\\scala\\vga\\Debouncer.scala 16:22]
-    sync1 <= sync0 @[\\src\\main\\scala\\vga\\Debouncer.scala 16:22]
+      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 16:22]
     reg sync2 : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), sync2) @[\\src\\main\\scala\\vga\\Debouncer.scala 17:22]
-    sync2 <= sync1 @[\\src\\main\\scala\\vga\\Debouncer.scala 17:22]
+      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 17:22]
+    sync0 <= io.in @[\\src\\main\\scala\\vga\\Debouncer.scala 18:9]
+    sync1 <= sync0 @[\\src\\main\\scala\\vga\\Debouncer.scala 19:9]
+    sync2 <= sync1 @[\\src\\main\\scala\\vga\\Debouncer.scala 20:9]
     reg count : UInt<19>, clock with :
-      reset => (reset, UInt<19>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 19:22]
+      reset => (reset, UInt<19>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 22:22]
     reg out : UInt<1>, clock with :
-      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 23:20]
-    io.out <= out @[\\src\\main\\scala\\vga\\Debouncer.scala 24:10]
-    node _T = neq(sync2, out) @[\\src\\main\\scala\\vga\\Debouncer.scala 27:15]
-    when _T : @[\\src\\main\\scala\\vga\\Debouncer.scala 27:24]
-      node _count_T = add(count, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\Debouncer.scala 28:20]
-      node _count_T_1 = tail(_count_T, 1) @[\\src\\main\\scala\\vga\\Debouncer.scala 28:20]
-      count <= _count_T_1 @[\\src\\main\\scala\\vga\\Debouncer.scala 28:11]
-      node _T_1 = eq(count, UInt<19>("h7ffff")) @[\\src\\main\\scala\\vga\\Debouncer.scala 29:17]
-      when _T_1 : @[\\src\\main\\scala\\vga\\Debouncer.scala 29:31]
-        out <= sync2 @[\\src\\main\\scala\\vga\\Debouncer.scala 30:11]
+      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\vga\\Debouncer.scala 26:20]
+    io.out <= out @[\\src\\main\\scala\\vga\\Debouncer.scala 27:10]
+    node _T = neq(sync2, out) @[\\src\\main\\scala\\vga\\Debouncer.scala 30:15]
+    when _T : @[\\src\\main\\scala\\vga\\Debouncer.scala 30:24]
+      node _count_T = add(count, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\Debouncer.scala 31:20]
+      node _count_T_1 = tail(_count_T, 1) @[\\src\\main\\scala\\vga\\Debouncer.scala 31:20]
+      count <= _count_T_1 @[\\src\\main\\scala\\vga\\Debouncer.scala 31:11]
+      node _T_1 = eq(count, UInt<19>("h7ffff")) @[\\src\\main\\scala\\vga\\Debouncer.scala 32:17]
+      when _T_1 : @[\\src\\main\\scala\\vga\\Debouncer.scala 32:31]
+        out <= sync2 @[\\src\\main\\scala\\vga\\Debouncer.scala 33:11]
     else :
-      count <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\Debouncer.scala 33:11]
+      count <= UInt<1>("h0") @[\\src\\main\\scala\\vga\\Debouncer.scala 36:11]
 
 
   module VGATimingModule :
