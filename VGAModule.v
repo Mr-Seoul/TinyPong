@@ -818,6 +818,11 @@ module VGAModule(
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
   reg [31:0] _RAND_1;
+  reg [31:0] _RAND_2;
+  reg [31:0] _RAND_3;
+  reg [31:0] _RAND_4;
+  reg [31:0] _RAND_5;
+  reg [31:0] _RAND_6;
 `endif // RANDOMIZE_REG_INIT
   wire  resetModule_clock; // @[\\src\\main\\scala\\vga\\VGAModule.scala 17:27]
   wire  resetModule_reset; // @[\\src\\main\\scala\\vga\\VGAModule.scala 17:27]
@@ -840,16 +845,21 @@ module VGAModule(
   wire  debouncer2_reset; // @[\\src\\main\\scala\\vga\\VGAModule.scala 34:28]
   wire  debouncer2_io_in; // @[\\src\\main\\scala\\vga\\VGAModule.scala 34:28]
   wire  debouncer2_io_out; // @[\\src\\main\\scala\\vga\\VGAModule.scala 34:28]
-  wire  TimingModule_io_hsync; // @[\\src\\main\\scala\\vga\\VGAModule.scala 49:30]
-  wire  TimingModule_io_vsync; // @[\\src\\main\\scala\\vga\\VGAModule.scala 49:30]
-  wire [10:0] TimingModule_io_indexX; // @[\\src\\main\\scala\\vga\\VGAModule.scala 49:30]
-  wire [9:0] TimingModule_io_indexY; // @[\\src\\main\\scala\\vga\\VGAModule.scala 49:30]
+  wire  TimingModule_io_hsync; // @[\\src\\main\\scala\\vga\\VGAModule.scala 52:30]
+  wire  TimingModule_io_vsync; // @[\\src\\main\\scala\\vga\\VGAModule.scala 52:30]
+  wire [10:0] TimingModule_io_indexX; // @[\\src\\main\\scala\\vga\\VGAModule.scala 52:30]
+  wire [9:0] TimingModule_io_indexY; // @[\\src\\main\\scala\\vga\\VGAModule.scala 52:30]
   reg [9:0] hCounter; // @[src/main/scala/chisel3/util/Counter.scala 61:40]
   wire  wrap_wrap = hCounter == 10'h31f; // @[src/main/scala/chisel3/util/Counter.scala 73:24]
   wire [9:0] _wrap_value_T_1 = hCounter + 10'h1; // @[src/main/scala/chisel3/util/Counter.scala 77:24]
   reg [9:0] vCounter; // @[src/main/scala/chisel3/util/Counter.scala 61:40]
   wire  wrap_wrap_1 = vCounter == 10'h20c; // @[src/main/scala/chisel3/util/Counter.scala 73:24]
   wire [9:0] _wrap_value_T_3 = vCounter + 10'h1; // @[src/main/scala/chisel3/util/Counter.scala 77:24]
+  reg [1:0] rReg; // @[\\src\\main\\scala\\vga\\VGAModule.scala 44:23]
+  reg [1:0] gReg; // @[\\src\\main\\scala\\vga\\VGAModule.scala 45:23]
+  reg [1:0] bReg; // @[\\src\\main\\scala\\vga\\VGAModule.scala 46:23]
+  reg  hSyncReg; // @[\\src\\main\\scala\\vga\\VGAModule.scala 55:27]
+  reg  vSyncReg; // @[\\src\\main\\scala\\vga\\VGAModule.scala 56:27]
   resetSynchronizer resetModule ( // @[\\src\\main\\scala\\vga\\VGAModule.scala 17:27]
     .clock(resetModule_clock),
     .reset(resetModule_reset),
@@ -879,17 +889,17 @@ module VGAModule(
     .io_in(debouncer2_io_in),
     .io_out(debouncer2_io_out)
   );
-  VGATimingModule TimingModule ( // @[\\src\\main\\scala\\vga\\VGAModule.scala 49:30]
+  VGATimingModule TimingModule ( // @[\\src\\main\\scala\\vga\\VGAModule.scala 52:30]
     .io_hsync(TimingModule_io_hsync),
     .io_vsync(TimingModule_io_vsync),
     .io_indexX(TimingModule_io_indexX),
     .io_indexY(TimingModule_io_indexY)
   );
-  assign io_col_R = graphics_io_col_R; // @[\\src\\main\\scala\\vga\\VGAModule.scala 44:14]
-  assign io_col_G = graphics_io_col_G; // @[\\src\\main\\scala\\vga\\VGAModule.scala 45:14]
-  assign io_col_B = graphics_io_col_B; // @[\\src\\main\\scala\\vga\\VGAModule.scala 46:14]
-  assign io_hsync = TimingModule_io_hsync; // @[\\src\\main\\scala\\vga\\VGAModule.scala 52:14]
-  assign io_vsync = TimingModule_io_vsync; // @[\\src\\main\\scala\\vga\\VGAModule.scala 53:14]
+  assign io_col_R = rReg; // @[\\src\\main\\scala\\vga\\VGAModule.scala 61:14]
+  assign io_col_G = gReg; // @[\\src\\main\\scala\\vga\\VGAModule.scala 62:14]
+  assign io_col_B = bReg; // @[\\src\\main\\scala\\vga\\VGAModule.scala 63:14]
+  assign io_hsync = hSyncReg; // @[\\src\\main\\scala\\vga\\VGAModule.scala 64:14]
+  assign io_vsync = vSyncReg; // @[\\src\\main\\scala\\vga\\VGAModule.scala 65:14]
   assign resetModule_clock = clock;
   assign resetModule_reset = reset;
   assign graphics_clock = clock;
@@ -905,8 +915,8 @@ module VGAModule(
   assign debouncer2_clock = clock;
   assign debouncer2_reset = resetModule_io_syncReset;
   assign debouncer2_io_in = io_input2; // @[\\src\\main\\scala\\vga\\VGAModule.scala 36:22]
-  assign TimingModule_io_indexX = {{1'd0}, hCounter}; // @[\\src\\main\\scala\\vga\\VGAModule.scala 50:28]
-  assign TimingModule_io_indexY = vCounter; // @[\\src\\main\\scala\\vga\\VGAModule.scala 51:28]
+  assign TimingModule_io_indexX = {{1'd0}, hCounter}; // @[\\src\\main\\scala\\vga\\VGAModule.scala 53:28]
+  assign TimingModule_io_indexY = vCounter; // @[\\src\\main\\scala\\vga\\VGAModule.scala 54:28]
   always @(posedge clock or posedge resetModule_io_syncReset) begin
     if (resetModule_io_syncReset) begin // @[src/main/scala/chisel3/util/Counter.scala 87:20]
       hCounter <= 10'h0; // @[src/main/scala/chisel3/util/Counter.scala 87:28]
@@ -925,6 +935,41 @@ module VGAModule(
       end else begin
         vCounter <= _wrap_value_T_3;
       end
+    end
+  end
+  always @(posedge clock or posedge resetModule_io_syncReset) begin
+    if (resetModule_io_syncReset) begin // @[\\src\\main\\scala\\vga\\VGAModule.scala 44:23]
+      rReg <= 2'h0; // @[\\src\\main\\scala\\vga\\VGAModule.scala 44:23]
+    end else begin
+      rReg <= graphics_io_col_R; // @[\\src\\main\\scala\\vga\\VGAModule.scala 47:10]
+    end
+  end
+  always @(posedge clock or posedge resetModule_io_syncReset) begin
+    if (resetModule_io_syncReset) begin // @[\\src\\main\\scala\\vga\\VGAModule.scala 45:23]
+      gReg <= 2'h0; // @[\\src\\main\\scala\\vga\\VGAModule.scala 45:23]
+    end else begin
+      gReg <= graphics_io_col_G; // @[\\src\\main\\scala\\vga\\VGAModule.scala 48:10]
+    end
+  end
+  always @(posedge clock or posedge resetModule_io_syncReset) begin
+    if (resetModule_io_syncReset) begin // @[\\src\\main\\scala\\vga\\VGAModule.scala 46:23]
+      bReg <= 2'h0; // @[\\src\\main\\scala\\vga\\VGAModule.scala 46:23]
+    end else begin
+      bReg <= graphics_io_col_B; // @[\\src\\main\\scala\\vga\\VGAModule.scala 49:10]
+    end
+  end
+  always @(posedge clock or posedge resetModule_io_syncReset) begin
+    if (resetModule_io_syncReset) begin // @[\\src\\main\\scala\\vga\\VGAModule.scala 55:27]
+      hSyncReg <= 1'h1; // @[\\src\\main\\scala\\vga\\VGAModule.scala 55:27]
+    end else begin
+      hSyncReg <= TimingModule_io_hsync; // @[\\src\\main\\scala\\vga\\VGAModule.scala 57:14]
+    end
+  end
+  always @(posedge clock or posedge resetModule_io_syncReset) begin
+    if (resetModule_io_syncReset) begin // @[\\src\\main\\scala\\vga\\VGAModule.scala 56:27]
+      vSyncReg <= 1'h1; // @[\\src\\main\\scala\\vga\\VGAModule.scala 56:27]
+    end else begin
+      vSyncReg <= TimingModule_io_vsync; // @[\\src\\main\\scala\\vga\\VGAModule.scala 58:14]
     end
   end
 // Register and memory initialization
@@ -967,12 +1012,37 @@ initial begin
   hCounter = _RAND_0[9:0];
   _RAND_1 = {1{`RANDOM}};
   vCounter = _RAND_1[9:0];
+  _RAND_2 = {1{`RANDOM}};
+  rReg = _RAND_2[1:0];
+  _RAND_3 = {1{`RANDOM}};
+  gReg = _RAND_3[1:0];
+  _RAND_4 = {1{`RANDOM}};
+  bReg = _RAND_4[1:0];
+  _RAND_5 = {1{`RANDOM}};
+  hSyncReg = _RAND_5[0:0];
+  _RAND_6 = {1{`RANDOM}};
+  vSyncReg = _RAND_6[0:0];
 `endif // RANDOMIZE_REG_INIT
   if (resetModule_io_syncReset) begin
     hCounter = 10'h0;
   end
   if (resetModule_io_syncReset) begin
     vCounter = 10'h0;
+  end
+  if (resetModule_io_syncReset) begin
+    rReg = 2'h0;
+  end
+  if (resetModule_io_syncReset) begin
+    gReg = 2'h0;
+  end
+  if (resetModule_io_syncReset) begin
+    bReg = 2'h0;
+  end
+  if (resetModule_io_syncReset) begin
+    hSyncReg = 1'h1;
+  end
+  if (resetModule_io_syncReset) begin
+    vSyncReg = 1'h1;
   end
   `endif // RANDOMIZE
 end // initial

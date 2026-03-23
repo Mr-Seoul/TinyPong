@@ -16,12 +16,12 @@ class vgatiming_tb extends AnyFlatSpec with ChiselScalatestTester {
         val y = i / 800
         dut.io.indexX.poke(x.U)
         dut.io.indexY.poke(y.U)
+        dut.clock.step()
         if (x > 655 && x < 752) {
           dut.io.hsync.expect(0.U)
         } else {
           dut.io.hsync.expect(1.U)
         }
-        dut.clock.step()
       }
 
     }

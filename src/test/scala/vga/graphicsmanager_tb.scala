@@ -14,9 +14,9 @@ class graphicsmanager_tb extends AnyFlatSpec with ChiselScalatestTester {
       for (i <- nums) {
         val x = i % 800
         val y = i / 800
-        val expectedval = (x+y) % 4
         dut.io.indexX.poke(x.U)
         dut.io.indexY.poke(y.U)
+        dut.clock.step()
         if (x < 640 && y < 480) {
           //Data doesn't matter here
         } else {
@@ -25,7 +25,6 @@ class graphicsmanager_tb extends AnyFlatSpec with ChiselScalatestTester {
           dut.io.col.G.expect(0.U)
           dut.io.col.B.expect(0.U)
         }
-        dut.clock.step()
       }
     }
   }

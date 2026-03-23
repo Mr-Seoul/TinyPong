@@ -483,14 +483,29 @@ circuit VGAModule :
     graphics.io.screenDone <= vWrap @[\\src\\main\\scala\\vga\\VGAModule.scala 41:28]
     graphics.io.input1 <= debouncer1.io.out @[\\src\\main\\scala\\vga\\VGAModule.scala 42:24]
     graphics.io.input2 <= debouncer2.io.out @[\\src\\main\\scala\\vga\\VGAModule.scala 43:24]
-    io.col.R <= graphics.io.col.R @[\\src\\main\\scala\\vga\\VGAModule.scala 44:14]
-    io.col.G <= graphics.io.col.G @[\\src\\main\\scala\\vga\\VGAModule.scala 45:14]
-    io.col.B <= graphics.io.col.B @[\\src\\main\\scala\\vga\\VGAModule.scala 46:14]
-    inst TimingModule of VGATimingModule @[\\src\\main\\scala\\vga\\VGAModule.scala 49:30]
+    reg rReg : UInt<2>, clock with :
+      reset => (resetModule.io.syncReset, UInt<2>("h0")) @[\\src\\main\\scala\\vga\\VGAModule.scala 44:23]
+    reg gReg : UInt<2>, clock with :
+      reset => (resetModule.io.syncReset, UInt<2>("h0")) @[\\src\\main\\scala\\vga\\VGAModule.scala 45:23]
+    reg bReg : UInt<2>, clock with :
+      reset => (resetModule.io.syncReset, UInt<2>("h0")) @[\\src\\main\\scala\\vga\\VGAModule.scala 46:23]
+    rReg <= graphics.io.col.R @[\\src\\main\\scala\\vga\\VGAModule.scala 47:10]
+    gReg <= graphics.io.col.G @[\\src\\main\\scala\\vga\\VGAModule.scala 48:10]
+    bReg <= graphics.io.col.B @[\\src\\main\\scala\\vga\\VGAModule.scala 49:10]
+    inst TimingModule of VGATimingModule @[\\src\\main\\scala\\vga\\VGAModule.scala 52:30]
     TimingModule.clock <= clock
     TimingModule.reset <= resetModule.io.syncReset
-    TimingModule.io.indexX <= hCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 50:28]
-    TimingModule.io.indexY <= vCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 51:28]
-    io.hsync <= TimingModule.io.hsync @[\\src\\main\\scala\\vga\\VGAModule.scala 52:14]
-    io.vsync <= TimingModule.io.vsync @[\\src\\main\\scala\\vga\\VGAModule.scala 53:14]
+    TimingModule.io.indexX <= hCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 53:28]
+    TimingModule.io.indexY <= vCounter @[\\src\\main\\scala\\vga\\VGAModule.scala 54:28]
+    reg hSyncReg : UInt<1>, clock with :
+      reset => (resetModule.io.syncReset, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\VGAModule.scala 55:27]
+    reg vSyncReg : UInt<1>, clock with :
+      reset => (resetModule.io.syncReset, UInt<1>("h1")) @[\\src\\main\\scala\\vga\\VGAModule.scala 56:27]
+    hSyncReg <= TimingModule.io.hsync @[\\src\\main\\scala\\vga\\VGAModule.scala 57:14]
+    vSyncReg <= TimingModule.io.vsync @[\\src\\main\\scala\\vga\\VGAModule.scala 58:14]
+    io.col.R <= rReg @[\\src\\main\\scala\\vga\\VGAModule.scala 61:14]
+    io.col.G <= gReg @[\\src\\main\\scala\\vga\\VGAModule.scala 62:14]
+    io.col.B <= bReg @[\\src\\main\\scala\\vga\\VGAModule.scala 63:14]
+    io.hsync <= hSyncReg @[\\src\\main\\scala\\vga\\VGAModule.scala 64:14]
+    io.vsync <= vSyncReg @[\\src\\main\\scala\\vga\\VGAModule.scala 65:14]
 

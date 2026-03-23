@@ -41,16 +41,28 @@ class VGAModule extends Module {
     graphics.io.screenDone := vWrap
     graphics.io.input1 := debouncer1.io.out
     graphics.io.input2 := debouncer2.io.out
-    io.col.R := graphics.io.col.R
-    io.col.G := graphics.io.col.G
-    io.col.B := graphics.io.col.B
+    val rReg = RegInit(0.U(2.W))
+    val gReg = RegInit(0.U(2.W))
+    val bReg = RegInit(0.U(2.W))
+    rReg := graphics.io.col.R
+    gReg := graphics.io.col.G
+    bReg := graphics.io.col.B
 
     //Sync signals (following VGA standard)
     val TimingModule = Module(new VGATimingModule)
     TimingModule.io.indexX := hCounter
     TimingModule.io.indexY := vCounter
-    io.hsync := TimingModule.io.hsync
-    io.vsync := TimingModule.io.vsync
+    val hSyncReg = RegInit(1.U(1.W))
+    val vSyncReg = RegInit(1.U(1.W))
+    hSyncReg := TimingModule.io.hsync
+    vSyncReg := TimingModule.io.vsync
+
+    //Register the outputs (just in case)
+    io.col.R := rReg
+    io.col.G := gReg
+    io.col.B := bReg
+    io.hsync := hSyncReg
+    io.vsync := vSyncReg
   }
 }
 
