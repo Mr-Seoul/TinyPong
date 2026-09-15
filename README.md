@@ -13,9 +13,12 @@ The ball and paddle objects handle if a pixel is inside their bounds and their g
 ## How to test ##
 You can run the test cases with ```sbt test```, or compile the chisel to verilog with ```sbt run```. 
 
+## Post Mortem ##
+While this design was primarily tested on a VGA monitor by connecting my FPGA via its VGA port, future revisions should rely more on comprehensive test benches for both quicker and more thorough verification. The chiseltest tests are pre-synthesis, and unfortunately can't integrate well with the post synthesis GLS tests. Future revisions should either use frontends / frameworks that can easily change the simulator so tests can be reused.
+
 ## Tiny Tapeout Preliminary Results ##
 You can see the 3d render here: https://gds-viewer.tinytapeout.com/?model=https://mr-seoul.github.io/TinyTapeOutGDS/tinytapeout.oas&pdk=ihp-sg13g2
 
-The chip has a 63% logic utilisation (before routing), and a 92% overall utilisation. The cocotb tests pass, works on my FPGA, and the STA/GLS don't give any errors besides one large fanout (likely the synched reset being funneled to all registers, which isn't an issue overall).
+The chip has a 63% logic utilization (before routing), and a 92% overall utilization. The design works on my FPGA, and the STA/DRC don't give any errors besides one large fanout (likely the synched reset being funneled to all registers, which isn't an issue overall).
 
 You can check the chip here in their verilog simulator: https://vga-playground.com/?repo=Mr-Seoul/TinyTapeOutGDS
