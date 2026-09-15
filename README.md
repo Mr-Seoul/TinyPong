@@ -14,7 +14,7 @@ The ball and paddle objects handle if a pixel is inside their bounds and their g
 You can run the test cases with ```sbt test```, or compile the chisel to verilog with ```sbt run```. 
 
 ## Post Mortem ##
-While this design was primarily tested on a VGA monitor by connecting my FPGA via its VGA port, future revisions should rely more on comprehensive test benches for both quicker and more thorough verification. The chiseltest tests are pre-synthesis, and unfortunately can't integrate well with the post synthesis GLS tests. Future revisions should either use frontends / frameworks that can easily change the simulator so tests can be reused.
+While this design was primarily tested on a VGA monitor by connecting my FPGA via its VGA port. Future revisions should rely more on comprehensive test benches for both quicker and more thorough verification. The chiseltest tests are pre-synthesis, and unfortunately can't integrate well with the post synthesis GLS tests. Future revisions should either use frontends / frameworks that can easily change the simulator so tests can be reused.
 
 ## Tiny Tapeout Preliminary Results ##
 You can see the 3d render here: https://gds-viewer.tinytapeout.com/?model=https://mr-seoul.github.io/TinyTapeOutGDS/tinytapeout.oas&pdk=ihp-sg13g2
